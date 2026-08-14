@@ -174,6 +174,17 @@ function ApplicationForm() {
         } catch (err) {
           console.error("Webhook error:", err);
         }
+        // Fire GA4 conversion event
+        if (typeof window !== "undefined" && (window as any).gtag) {
+          (window as any).gtag("event", "generate_lead", {
+            event_category: "franchise",
+            event_label: form.zip,
+            value: 1,
+            currency: "USD",
+            utm_source: utms.utm_source,
+            utm_campaign: utms.utm_campaign,
+          });
+        }
         setSubmitted(true);
       }} className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
