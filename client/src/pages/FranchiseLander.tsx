@@ -122,8 +122,29 @@ const whyItems = [
   { icon: Clock, title: "60-Day Momentum Launch", desc: "Our proprietary 60-day program turns you from franchise owner to business owner — covering cashflow, sales, marketing, and operations." },
 ];
 
+
+// ─── UTM Capture ──────────────────────────────────────────────────────────────
+function useUtmParams() {
+  const [utms] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get("utm_source") || "",
+      utm_medium: params.get("utm_medium") || "",
+      utm_campaign: params.get("utm_campaign") || "",
+      utm_content: params.get("utm_content") || "",
+      utm_term: params.get("utm_term") || "",
+      fbclid: params.get("fbclid") || "",
+      gclid: params.get("gclid") || "",
+      referrer: document.referrer || "",
+      landing_page: window.location.href,
+    };
+  });
+  return utms;
+}
+
 function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
+  const utms = useUtmParams();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", zip: "", capitalConfirm: false });
 
   if (submitted) {
@@ -145,9 +166,9 @@ function ApplicationForm() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               ...form,
+              ...utms,
               source: "welcome.localhandyman.com",
-              timestamp: new Date().toISOString(),
-              page_url: window.location.href
+              timestamp: new Date().toISOString()
             })
           });
         } catch (err) {
