@@ -137,7 +137,24 @@ function ApplicationForm() {
   }
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-3">
+    <form onSubmit={async (e) => {
+        e.preventDefault();
+        try {
+          await fetch("https://localhandyman.app.n8n.cloud/webhook/franchise-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...form,
+              source: "welcome.localhandyman.com",
+              timestamp: new Date().toISOString(),
+              page_url: window.location.href
+            })
+          });
+        } catch (err) {
+          console.error("Webhook error:", err);
+        }
+        setSubmitted(true);
+      }} className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>First Name *</label>
