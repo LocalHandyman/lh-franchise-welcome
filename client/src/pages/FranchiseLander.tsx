@@ -35,38 +35,38 @@ function Reveal({ children, delay = 0, className = "" }: { children: any; delay?
 }
 
 const LH_ORANGE = "#F04E23";
-const HANDYMAN_1987_IMG = "/manus-storage/lh-1987-bg-clean_9dba94aa.jpg";
+const HANDYMAN_1987_IMG = "/images/lh-1987-bg-clean_9dba94aa.jpg";
 const LH_NAVY = "#1C2B4A";
-const LOGO_URL = "/manus-storage/handymanlogo_d9f89eaa.png";
-const HERO_IMG = "/manus-storage/lh-franchise-hero-v2_6c1b7f20.jpg";
-const OWNER_IMG = "/manus-storage/lh-franchise-owner-v2_ff931b44.jpg";
-const NIKKI_IMG = "/manus-storage/LocalHandyman-_Apr26-400x400_51f410f6.jpg";
-const CHUNKCHUNK_IMG = "/manus-storage/lh-chunkchunk-ad_8623bf04.jpg";
+const LOGO_URL = "/images/handymanlogo_d9f89eaa.png";
+const HERO_IMG = "/images/lh-franchise-hero-v2_6c1b7f20.jpg";
+const OWNER_IMG = "/images/lh-franchise-owner-v2_ff931b44.jpg";
+const NIKKI_IMG = "/images/LocalHandyman-_Apr26-400x400_51f410f6.jpg";
+const CHUNKCHUNK_IMG = "/images/lh-chunkchunk-ad_8623bf04.jpg";
 
 
-const HERO_FULLBLEED = "/manus-storage/lh-hero-fullbleed_cd3bc2e2.jpg";
+const HERO_FULLBLEED = "/images/lh-hero-fullbleed_cd3bc2e2.jpg";
 
 // Real LH franchisee photos from Google Drive
 // Real LH franchisee work photos (correct branding)
-const PHOTO_CAULKING = "/manus-storage/loc-13-image-1781038744882_mq74hesy_884fdd46_2483a293.png";
-const PHOTO_BASEBOARD = "/manus-storage/loc-22-image-1784834356703_mrxwajmn_86eeb15d_a86325b9.png";
-const PHOTO_PRESSURE_WASH = "/manus-storage/loc-5-image-1780506589508_mpybnh38_63a6a0d7_b46aa351.png";
-const PHOTO_DECK_RAILING = "/manus-storage/loc-19-image-1780507361162_mpyc40i2_13c55fff_79953019.png";
-const PHOTO_REPAIR_1 = "/manus-storage/loc-49-image-1780942860891_mq5jea8r_f2757d34_c37a95d1.png";
-const PHOTO_REPAIR_2 = "/manus-storage/loc-33-image-1785778462623_msdie0f3_bd924dd6_4f444d6d.png";
-const PHOTO_REPAIR_3 = "/manus-storage/loc-49-image-1784829542283_mrxtfcsr_45d5640d_a3b026a6.png";
-const PHOTO_REPAIR_4 = "/manus-storage/loc-13-image-1780935139706_mq5essje_381bacb4_423239b3.png";
-const PHOTO_BEFORE_AFTER_OKC = "/manus-storage/cohort2_v6_oklahoma_city_86eb4b43_bc45edfb.webp";
-const PHOTO_BEFORE_AFTER_PIT = "/manus-storage/cohort2_v6_pittsburgh_de73f969_5e27a5b7.webp";
-const PHOTO_BEFORE_AFTER_CLT = "/manus-storage/cohort2_v6_north_charlotte_0f724800_bb836084.webp";
+const PHOTO_CAULKING = "/images/loc-13-image-1781038744882_mq74hesy_884fdd46_2483a293.png";
+const PHOTO_BASEBOARD = "/images/loc-22-image-1784834356703_mrxwajmn_86eeb15d_a86325b9.png";
+const PHOTO_PRESSURE_WASH = "/images/loc-5-image-1780506589508_mpybnh38_63a6a0d7_b46aa351.png";
+const PHOTO_DECK_RAILING = "/images/loc-19-image-1780507361162_mpyc40i2_13c55fff_79953019.png";
+const PHOTO_REPAIR_1 = "/images/loc-49-image-1780942860891_mq5jea8r_f2757d34_c37a95d1.png";
+const PHOTO_REPAIR_2 = "/images/loc-33-image-1785778462623_msdie0f3_bd924dd6_4f444d6d.png";
+const PHOTO_REPAIR_3 = "/images/loc-49-image-1784829542283_mrxtfcsr_45d5640d_a3b026a6.png";
+const PHOTO_REPAIR_4 = "/images/loc-13-image-1780935139706_mq5essje_381bacb4_423239b3.png";
+const PHOTO_BEFORE_AFTER_OKC = "/images/cohort2_v6_oklahoma_city_86eb4b43_bc45edfb.webp";
+const PHOTO_BEFORE_AFTER_PIT = "/images/cohort2_v6_pittsburgh_de73f969_5e27a5b7.webp";
+const PHOTO_BEFORE_AFTER_CLT = "/images/cohort2_v6_north_charlotte_0f724800_bb836084.webp";
 
 // Real franchisee team photos from Supabase (correct LH branding)
-const PHOTO_ATLANTA_VAN = "/manus-storage/atlanta_team_1_eaff8329.jpg";
-const PHOTO_ATLANTA_TEAM = "/manus-storage/atlanta_team_3_38aba96a.jpg";
-const PHOTO_RALEIGH_OWNER = "/manus-storage/raleigh_team_1_23719365.jpg";
-const PHOTO_RALEIGH_TEAM = "/manus-storage/raleigh_team_2_8585b8f5.jpg";
-const PHOTO_CALGARY_TEAM = "/manus-storage/calgary_team_1_46bfda53.jpg";
-const HERO_VAN_TECH = "/manus-storage/lh-hero-v3_1e396437.jpg";
+const PHOTO_ATLANTA_VAN = "/images/atlanta_team_1_eaff8329.jpg";
+const PHOTO_ATLANTA_TEAM = "/images/atlanta_team_3_38aba96a.jpg";
+const PHOTO_RALEIGH_OWNER = "/images/raleigh_team_1_23719365.jpg";
+const PHOTO_RALEIGH_TEAM = "/images/raleigh_team_2_8585b8f5.jpg";
+const PHOTO_CALGARY_TEAM = "/images/calgary_team_1_46bfda53.jpg";
+const HERO_VAN_TECH = "/images/lh-hero-v3_1e396437.jpg";
 
 
 
@@ -543,7 +543,7 @@ export default function FranchiseLander() {
               </div>
             </div>
             <div className="relative">
-              <img src="/manus-storage/1747_0d4047bf.JPG" alt="Local Handyman franchise owner with branded vans" className="rounded-2xl shadow-xl w-full object-cover" style={{ aspectRatio: "1/1" }} />
+              <img src="/images/1747_0d4047bf.JPG" alt="Local Handyman franchise owner with branded vans" className="rounded-2xl shadow-xl w-full object-cover" style={{ aspectRatio: "1/1" }} />
               <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-4">
                 <div className="text-2xl font-black" style={{ color: LH_ORANGE }}>60+</div>
                 <div className="text-xs text-gray-500 font-medium">Territories Sold</div>
@@ -669,9 +669,9 @@ export default function FranchiseLander() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { location: "Regina, SK", quote: "We couldn't be happier with our choice.", body: "Local Handyman Group Head Office has offered unwavering support. It's been about 5 years since we opened Handyman Regina, and we couldn't be happier with our choice. The training, resources, and ongoing assistance have exceeded our expectations, making it possible for us to deliver top-notch services to our community.", img: "/manus-storage/tmp4ml9n3qa_423588a3.webp" },
-              { location: "Vancouver, BC", quote: "Joining the Local Handyman Group has been a game-changer.", body: "Their franchise model provided a proven recipe for success, offering the support and structure I needed to grow a reputable handyman business. Joining the Local Handyman Group has been a game-changer, allowing me to work smarter, not harder, and focus on providing top-quality services without the heavy lifting.", img: "/manus-storage/tmpu5slgdnq_66616ecb.webp" },
-              { location: "Calgary, AB", quote: "From day one, they've been there every step of the way.", body: "Starting a business has many challenges, but the journey has been so rewarding. A key factor in our success has been the unwavering support from our franchise Head Office. From day one, they've been there every step of the way, offering guidance, resources, and encouragement that have made all the difference.", img: "/manus-storage/tmpmyx91iia_63a0e156.webp" },
+              { location: "Regina, SK", quote: "We couldn't be happier with our choice.", body: "Local Handyman Group Head Office has offered unwavering support. It's been about 5 years since we opened Handyman Regina, and we couldn't be happier with our choice. The training, resources, and ongoing assistance have exceeded our expectations, making it possible for us to deliver top-notch services to our community.", img: "/images/tmp4ml9n3qa_423588a3.webp" },
+              { location: "Vancouver, BC", quote: "Joining the Local Handyman Group has been a game-changer.", body: "Their franchise model provided a proven recipe for success, offering the support and structure I needed to grow a reputable handyman business. Joining the Local Handyman Group has been a game-changer, allowing me to work smarter, not harder, and focus on providing top-quality services without the heavy lifting.", img: "/images/tmpu5slgdnq_66616ecb.webp" },
+              { location: "Calgary, AB", quote: "From day one, they've been there every step of the way.", body: "Starting a business has many challenges, but the journey has been so rewarding. A key factor in our success has been the unwavering support from our franchise Head Office. From day one, they've been there every step of the way, offering guidance, resources, and encouragement that have made all the difference.", img: "/images/tmpmyx91iia_63a0e156.webp" },
             ].map(({ location, quote, body, img }) => (
               <div key={location} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="aspect-[4/3] overflow-hidden">
@@ -786,9 +786,9 @@ export default function FranchiseLander() {
         {/* Wide cinematic owner photos — different sizes for visual rhythm */}
         <div className="flex gap-4 px-4 md:px-8 overflow-x-auto pb-2" style={{ scrollSnapType: "x mandatory" }}>
           {[
-            { src: "/manus-storage/IMG_8179_100c1d9f.jpeg", label: "Fraser Valley, BC", w: "280px" },
-            { src: "/manus-storage/IMG_8175_16a0d172.jpeg", label: "Raleigh, NC", w: "280px" },
-            { src: "/manus-storage/1747_0d4047bf.JPG", label: "St. Louis, MO", w: "320px" },
+            { src: "/images/IMG_8179_100c1d9f.jpeg", label: "Fraser Valley, BC", w: "280px" },
+            { src: "/images/IMG_8175_16a0d172.jpeg", label: "Raleigh, NC", w: "280px" },
+            { src: "/images/1747_0d4047bf.JPG", label: "St. Louis, MO", w: "320px" },
             { src: PHOTO_BEFORE_AFTER_OKC, label: "Oklahoma City, OK", w: "280px" },
             { src: PHOTO_BEFORE_AFTER_PIT, label: "Pittsburgh, PA", w: "280px" },
           ].map(({ src, label, w }) => (
@@ -815,7 +815,7 @@ export default function FranchiseLander() {
           </Reveal>
           {/* Video */}
           <div className="rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <video controls className="w-full" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
+            <video controls className="w-full" poster="/images/colin-poster.png" style={{ aspectRatio: "16/9" }}>
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
           </div>
