@@ -149,10 +149,38 @@ function ApplicationForm() {
 
   if (submitted) {
     return (
-      <div className="text-center py-8">
-        <CheckCircle className="w-14 h-14 mx-auto mb-4" style={{ color: LH_ORANGE }} />
-        <h3 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "Montserrat, sans-serif" }}>Application Received!</h3>
-        <p className="text-white/80 text-sm">A member of our franchise team will reach out within 1 business day.</p>
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center relative animate-in fade-in zoom-in duration-300">
+          <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: LH_ORANGE }} />
+          <h3 className="text-2xl font-black mb-2" style={{ fontFamily: "Montserrat, sans-serif", color: "#1C2B4A" }}>You're In. Here's What Happens Next.</h3>
+          <div className="mt-6 text-left space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: LH_ORANGE }}>1</div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Territory Check</p>
+                <p className="text-gray-600 text-xs">We verify your zip code against available territories.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: LH_ORANGE }}>2</div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Franchise Advisor Call</p>
+                <p className="text-gray-600 text-xs">A member of our team will reach out within 1 business day to discuss your territory and answer questions.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: LH_ORANGE }}>3</div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">You Decide</p>
+                <p className="text-gray-600 text-xs">No pressure. No broker fees. Just a conversation about whether this is the right fit.</p>
+              </div>
+            </div>
+          </div>
+          <button onClick={() => setSubmitted(false)} className="mt-6 w-full py-3 rounded-lg text-white font-bold text-sm transition-all hover:opacity-90" style={{ backgroundColor: LH_ORANGE }}>
+            Back to Page
+          </button>
+          <p className="mt-3 text-xs text-gray-400">Check your email for a confirmation.</p>
+        </div>
       </div>
     );
   }
