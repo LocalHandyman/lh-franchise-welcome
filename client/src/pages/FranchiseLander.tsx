@@ -186,6 +186,8 @@ function ApplicationForm() {
           });
         }
         setSubmitted(true);
+          // Meta Pixel Lead event
+          if (typeof (window as any).fbq === 'function') { (window as any).fbq('track', 'Lead', { content_name: 'Franchise Lead', content_category: 'franchise' }); };
       }} className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
