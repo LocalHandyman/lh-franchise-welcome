@@ -40,7 +40,7 @@ const LH_NAVY = "#1C2B4A";
 const LOGO_URL = "/images/handymanlogo_d9f89eaa.png";
 const HERO_IMG = "/images/lh-franchise-hero-v2_6c1b7f20.jpg";
 const OWNER_IMG = "/images/lh-franchise-owner-v2_ff931b44.jpg";
-const NIKKI_IMG = "/images/LocalHandyman-_Apr26-400x400_51f410f6.jpg";
+const NIKKI_IMG = "/images/nikki-zavradinos.jpg";
 const CHUNKCHUNK_IMG = "/images/lh-chunkchunk-ad_8623bf04.jpg";
 
 
@@ -50,14 +50,11 @@ const HERO_FULLBLEED = "/images/lh-hero-fullbleed_cd3bc2e2.jpg";
 // Real LH franchisee work photos (correct branding)
 const PHOTO_CAULKING = "/images/loc-13-image-1781038744882_mq74hesy_884fdd46_2483a293.png";
 const PHOTO_BASEBOARD = "/images/loc-22-image-1784834356703_mrxwajmn_86eeb15d_a86325b9.png";
-const PHOTO_PRESSURE_WASH = "/images/loc-5-image-1780506589508_mpybnh38_63a6a0d7_b46aa351.png";
+const PHOTO_REPAIR_2 = "/images/loc-5-image-1780506589508_mpybnh38_63a6a0d7_b46aa351.png";
 const PHOTO_DECK_RAILING = "/images/loc-19-image-1780507361162_mpyc40i2_13c55fff_79953019.png";
 const PHOTO_REPAIR_1 = "/images/loc-49-image-1780942860891_mq5jea8r_f2757d34_c37a95d1.png";
-const PHOTO_REPAIR_2 = "/images/loc-33-image-1785778462623_msdie0f3_bd924dd6_4f444d6d.png";
 const PHOTO_REPAIR_3 = "/images/loc-49-image-1784829542283_mrxtfcsr_45d5640d_a3b026a6.png";
 const PHOTO_REPAIR_4 = "/images/loc-13-image-1780935139706_mq5essje_381bacb4_423239b3.png";
-const PHOTO_BEFORE_AFTER_OKC = "/images/cohort2_v6_oklahoma_city_86eb4b43_bc45edfb.webp";
-const PHOTO_BEFORE_AFTER_PIT = "/images/cohort2_v6_pittsburgh_de73f969_5e27a5b7.webp";
 const PHOTO_BEFORE_AFTER_CLT = "/images/cohort2_v6_north_charlotte_0f724800_bb836084.webp";
 
 // Real franchisee team photos from Supabase (correct LH branding)
@@ -93,12 +90,12 @@ function useFadeIn() {
 
 const faqs = [
   { q: "Do I need trades experience to own a Local Handyman franchise?", a: "No. We provide the systems; you provide the leadership. Our most successful franchisees come from operations, sales, and management backgrounds — not the trades. You hire and manage the skilled technicians." },
-  { q: "What is the total investment to get started?", a: "We recommend a minimum of $350,000–$400,000 in liquid capital for first-year sustainability. This covers the $60,000 franchise fee, vehicle and wrap, tools, marketing materials, and operating reserves to support you through your first year of growth. Financing options are available and will be discussed on your discovery call." },
+  { q: "What is the total investment to get started?", a: "We recommend a minimum of $400,000 in liquid capital for first-year sustainability. This covers the $60,000 franchise fee, vehicle and wrap, tools, marketing materials, and operating reserves to support you through your first year of growth. Financing options are available and will be discussed on your discovery call." },
   { q: "What are the royalties?", a: "6%–10% royalty depending on annual revenues. This includes ongoing field support, your dedicated franchise success coach, national marketing campaigns, and access to our proprietary booking and CRM software." },
   { q: "What financing options are available?", a: "Financing options are available and will be discussed in detail on your discovery call. We want to ensure every new partner is properly capitalized for long-term success." },
-  { q: "How quickly can I be operational?", a: "Most franchisees are fully operational within 60\u201390 days of signing. Our proprietary 60-day Momentum program turns franchise owners into business owners \u2014 covering cashflow, sales, marketing, and operations." },
-  { q: "Will I have exclusive territorial rights?", a: "Yes. For the territory or territories you purchase, you have exclusive rights. You also have the first right of refusal on adjacent territories for 12 months." },
-  { q: "How do I find and hire handymen?", a: "We have proven systems and processes to help you find and hire the right people for your van(s). You are never alone in this process \u2014 our team supports hiring from day one." },
+  { q: "How quickly can I be operational?", a: "Most franchisees are fully operational within 60\u201390 days of signing. Our proprietary 60-day Momentum program supports franchise owners in becoming confident business operators \u2014 covering cashflow, sales, marketing, and operations." },
+  { q: "Will I have exclusive territorial rights?", a: "Yes. For the territory or territories you purchase, you have exclusive rights. Growth opportunities in adjacent territories are available as you scale." },
+  { q: "How do I find and hire handymen?", a: "We provide comprehensive tools, training, and proven recruitment systems to help you build your team. From job posting templates to interview frameworks and onboarding checklists — our team supports you through the entire hiring process." },
   { q: "What marketing support do you provide?", a: "Focused quick-launch tactics including print, offline, web, social media, and online tools. All websites, design, SEO, copywriting, and content are managed by Local Handyman Group. We also have regular marketing calls with all franchise owners to discuss what\u2019s working." },
   { q: "What training and support programs do you offer?", a: "We offer a proprietary 60-day Momentum program that turns Franchise Owners into Business Owners and helps them fully understand all aspects of the business from Cashflow, Sales, Marketing and Operations. Plus, we have multiple training and collaboration calls each month to fully support in all areas of business." },
   { q: "Will there be ongoing training for new products, services, or updates?", a: "Yes. We have frequent system-wide calls with all Franchise Owners to share updates, new services, and best practices across the network." },
@@ -108,7 +105,7 @@ const faqs = [
 
 const steps = [
   { num: "01", title: "Submit Your Info", desc: "Fill out the short form below. Takes 90 seconds. No obligation." },
-  { num: "02", title: "Discovery Call", desc: "A 20-minute call with our franchise team. We'll answer every question and walk you through the numbers." },
+  { num: "02", title: "Discovery Call", desc: "An informative call with our franchise team. We'll answer every question and walk you through the opportunity in detail." },
   { num: "03", title: "Review the FDD", desc: "We send you the Franchise Disclosure Document. Take your time — no pressure." },
   { num: "04", title: "Territory Agreement", desc: "Sign your agreement, complete training, and launch your Local Handyman location." },
 ];
@@ -117,34 +114,13 @@ const whyItems = [
   { icon: Users, title: "You're the Conductor, Not the Technician", desc: "You don't swing a hammer. You don't need to be 'handy.' You hire skilled tradespeople and direct the business — like a conductor leads an orchestra." },
   { icon: Shield, title: "No Trades Experience Required", desc: "Our most successful owners come from corporate, sales, and operations backgrounds. You bring leadership. We bring the systems, training, and playbooks." },
   { icon: TrendingUp, title: "Scalable to 4 Vans", desc: "Build to four vans per territory in 12–18 months. Multiple revenue streams: residential repairs, commercial contracts, and recurring service plans." },
-  { icon: DollarSign, title: "$600B+ Market, Bar on the Floor", desc: "Your competition uses paper invoices and whiteboard scheduling. Less than 1% of revenue goes to technology. The opportunity is massive." },
-  { icon: MapPin, title: "Protected Territory", desc: "Your territory is yours exclusively. First right of refusal on adjacent territories for 12 months as you grow." },
-  { icon: Clock, title: "60-Day Momentum Launch", desc: "Our proprietary 60-day program turns you from franchise owner to business owner — covering cashflow, sales, marketing, and operations." },
+  { icon: DollarSign, title: "$700B+ Market, Bar on the Floor", desc: "Your competition uses paper invoices and whiteboard scheduling. Less than 1% of revenue goes to technology. The opportunity is massive." },
+  { icon: MapPin, title: "Protected Territory", desc: "Your territory is yours exclusively. Growth opportunities in adjacent territories available as you scale." },
+  { icon: Clock, title: "60-Day Momentum Launch", desc: "Our proprietary 60-day program supports you in becoming a confident business operator — covering cashflow, sales, marketing, and operations." },
 ];
-
-
-// ─── UTM Capture ──────────────────────────────────────────────────────────────
-function useUtmParams() {
-  const [utms] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return {
-      utm_source: params.get("utm_source") || "",
-      utm_medium: params.get("utm_medium") || "",
-      utm_campaign: params.get("utm_campaign") || "",
-      utm_content: params.get("utm_content") || "",
-      utm_term: params.get("utm_term") || "",
-      fbclid: params.get("fbclid") || "",
-      gclid: params.get("gclid") || "",
-      referrer: document.referrer || "",
-      landing_page: window.location.href,
-    };
-  });
-  return utms;
-}
 
 function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
-  const utms = useUtmParams();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", zip: "", capitalConfirm: false });
 
   if (submitted) {
@@ -194,28 +170,32 @@ function ApplicationForm() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               ...form,
-              ...utms,
               source: "welcome.localhandyman.com",
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
+              page_url: window.location.href
             })
           });
         } catch (err) {
           console.error("Webhook error:", err);
         }
-        // Fire GA4 conversion event
-        if (typeof window !== "undefined" && (window as any).gtag) {
-          (window as any).gtag("event", "generate_lead", {
-            event_category: "franchise",
-            event_label: form.zip,
-            value: 1,
-            currency: "USD",
-            utm_source: utms.utm_source,
-            utm_campaign: utms.utm_campaign,
+        // Push lead data to GTM dataLayer
+        if (typeof window !== 'undefined' && (window as any).dataLayer) {
+          (window as any).dataLayer.push({
+            event: 'lead_form_submit',
+            lead_name: `${form.firstName} ${form.lastName}`,
+            lead_email: form.email,
+            lead_phone: form.phone,
+            lead_zip: form.zip,
+          });
+        }
+        // Fire Meta Pixel Lead event
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+          (window as any).fbq('track', 'Lead', {
+            content_name: 'Franchise Lead Form',
+            content_category: 'franchise_recruitment',
           });
         }
         setSubmitted(true);
-          // Meta Pixel Lead event
-          if (typeof (window as any).fbq === 'function') { (window as any).fbq('track', 'Lead', { content_name: 'Franchise Lead', content_category: 'franchise' }); };
       }} className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -253,7 +233,7 @@ function ApplicationForm() {
         <input required type="checkbox" id="capitalConfirm" checked={form.capitalConfirm} onChange={e => setForm({...form, capitalConfirm: e.target.checked})}
           className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-orange-500" />
         <label htmlFor="capitalConfirm" className="text-xs text-gray-600 leading-tight">
-          I confirm I have access to a minimum of <strong>$350,000 in liquid capital</strong> or equivalent financing capacity.
+          I confirm I have access to a minimum of <strong>$400,000 in liquid capital</strong> or equivalent financing capacity.
         </label>
       </div>
       <button type="submit"
@@ -322,16 +302,16 @@ export default function FranchiseLander() {
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-none mb-4 md:mb-6 uppercase"
                 style={{ fontFamily: "Montserrat, sans-serif", letterSpacing: "-0.02em", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}>
-                Dominate a<br />$600B Industry<br />
+                Dominate a<br />$700B Industry<br />
                 <span style={{ color: LH_ORANGE }}>Still Running on Pencil & Paper.</span>
               </h1>
 
               <p className="text-white/85 text-lg leading-relaxed mb-8 max-w-lg" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
-                McKinsey ranks the trades as the 2nd-to-last digitized industry on Earth. For forward-thinking investors, this is the dip — recession-proof, AI-proof, and backed by $600B in annual demand. This window won't be open forever.
+                McKinsey ranks the trades as the 2nd-to-last digitized industry on Earth. For forward-thinking investors, this is the dip — recession-proof, AI-proof, and backed by $700B in annual demand. This window won't be open forever.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-8">
-                {["$600B+ Market", "Protected Territory", "60-Day Launch", "No Trades Experience Required"].map(item => (
+                {["$700B+ Market", "Protected Territory", "60-Day Launch", "No Trades Experience Required"].map(item => (
                   <div key={item} className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: LH_ORANGE }} />
                     <span className="text-white font-semibold text-sm" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>{item}</span>
@@ -377,7 +357,7 @@ export default function FranchiseLander() {
               Own a Business That AI<br />Will Never Replace.
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-              $600 billion in annual demand. Recession-proof. AI-proof. And the competition is still running on paper and pencil. High demand, slow to adopt technology, and safe from disruption — this is the rare business that only grows as everything else gets automated away.
+              $700 billion in annual demand. Recession-proof. AI-proof. And the competition is still running on paper and pencil. High demand, slow to adopt technology, and safe from disruption — this is the rare business that only grows as everything else gets automated away.
             </p>
           </div>
 
@@ -556,13 +536,13 @@ export default function FranchiseLander() {
       <section className="py-0 overflow-hidden">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
           <div className="aspect-[4/3] overflow-hidden">
-            <img src={PHOTO_PRESSURE_WASH} alt="Pressure washing driveway" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            <img src={PHOTO_REPAIR_2} alt="Pressure washing driveway" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
           </div>
           <div className="aspect-[4/3] overflow-hidden">
             <img src={PHOTO_REPAIR_3} alt="Local Handyman repair work" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
           </div>
           <div className="aspect-[4/3] overflow-hidden">
-            <img src={PHOTO_BEFORE_AFTER_PIT} alt="Before and after — Pittsburgh" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            <img src={PHOTO_BASEBOARD} alt="Before and after — Pittsburgh" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
           </div>
           <div className="aspect-[4/3] overflow-hidden">
             <img src={PHOTO_REPAIR_4} alt="Local Handyman technician at work" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" />
@@ -605,13 +585,13 @@ export default function FranchiseLander() {
                 Local Handyman Is Built<br />for This Moment.
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                While the rest of the industry runs on paper calendars and missed calls, Local Handyman operates on AI-powered dispatch, automated booking, real-time customer communication, and a marketing engine that fills your calendar before you open the doors.
+                While the rest of the industry runs on paper calendars and missed calls, Local Handyman operates on Technology-driven dispatch, streamlined booking, real-time customer communication, and a marketing engine that fills your calendar before you open the doors.
               </p>
               <div className="space-y-4">
                 {[
                   "Proprietary tech stack — CRM, dispatch, invoicing, and reviews automated from day one",
-                  "Mentorship from Colin Sprake — 4x bestselling author, 110,000+ entrepreneurs trained",
-                  "Exclusive 50,000-person territories — protected, yours to dominate",
+                  "Built by Colin Sprake — 4x bestselling author, CEO, and 110,000+ entrepreneurs trained",
+                  "Exclusive and protected territories — yours to dominate",
                   "Full training program — no trades experience required, operational in 60 days",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
@@ -672,13 +652,13 @@ export default function FranchiseLander() {
                 <span style={{ color: LH_ORANGE }}>The Demand Is Real."</span>
               </h2>
               <p className="text-white/75 text-lg leading-relaxed mb-8">
-                "I had no trades experience at all — I came from operations and sales. My whole tech team was booked the first week we opened. I had a waiting list on launch week. The demand in this market is real, and Local Handyman gave me the brand and systems to capture it."
+                "I had no trades experience at all — I came from a corporate technology and operations background. My whole tech team was booked the first week we opened. I had a waiting list on launch week. The demand in this market is real, and Local Handyman gave me the brand and systems to capture it."
               </p>
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-14 h-14 rounded-full flex items-center justify-center font-black text-xl text-white"
                   style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>C</div>
                 <div>
-                  <div className="text-white font-bold">Nicky S.</div>
+                  <div className="text-white font-bold">Nikki Zavradinos</div>
                   <div className="text-white/60 text-sm">St. Louis, MO — Franchisee</div>
                   <div className="flex gap-0.5 mt-1">
                     {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-current" style={{ color: "#F5C518" }} />)}
@@ -692,7 +672,7 @@ export default function FranchiseLander() {
               </a>
             </div>
             <div className="relative">
-              <img src={NIKKI_IMG} alt="Nikki — Local Handyman Franchisee" className="rounded-2xl w-full object-cover shadow-2xl" style={{ maxHeight: "480px" }} />
+              <img src={NIKKI_IMG} alt="Nikki Zavradinos — Local Handyman Franchisee" className="rounded-2xl w-full object-cover shadow-2xl" style={{ maxHeight: "480px" }} />
               <div className="absolute -bottom-4 -left-4 rounded-xl p-4 shadow-xl" style={{ backgroundColor: LH_ORANGE }}>
                 <div className="text-white font-black text-xl leading-tight" style={{ fontFamily: "Montserrat, sans-serif" }}>Booked<br />Week 1</div>
                 <div className="text-white/80 text-xs uppercase tracking-wide mt-1">Launch Week</div>
@@ -782,7 +762,7 @@ export default function FranchiseLander() {
           <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE }}>Our Scope</p>
           <h2 className="text-3xl md:text-4xl font-black uppercase" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>We Handle What Homeowners<br />Actually Call About.</h2>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base leading-relaxed">We don't do electrical, roofing, or major plumbing — those require specialized licensing. What we do is everything else: the 80% of home repair calls that solo operators fumble because they're disorganized, overbooked, or unreachable. Drywall, painting, decks, doors, tiling, furniture assembly, shelving, fencing — backed by AI-powered dispatch, automated booking, and a tech stack that gets your team to the job faster, more specialized, and more effective than any single-van operator in your market.</p>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base leading-relaxed">We don't do electrical, roofing, or major plumbing — those require specialized licensing. What we do is everything else: the 80% of home repair calls that solo operators fumble because they're disorganized, overbooked, or unreachable. Drywall repair, door and hardware installation, interior painting, tile and backsplash, furniture assembly, shelving and mounting, deck and fence repair, caulking and weatherproofing — backed by Technology-driven dispatch, streamlined booking, and a tech stack that gets your team to the job faster, more specialized, and more effective than any single-van operator in your market.</p>
           </Reveal>
         </div>
         {/* Kona-style full-width asymmetric mosaic */}
@@ -810,7 +790,7 @@ export default function FranchiseLander() {
             <div className="absolute bottom-0 left-0 right-0 p-3 text-white text-xs font-bold uppercase tracking-wide" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}>Home Services</div>
           </div>
           <div className="relative overflow-hidden" style={{ aspectRatio: "1/1" }}>
-            <img src={PHOTO_BEFORE_AFTER_OKC} alt="Before and after — Oklahoma City" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+            <img src={PHOTO_CAULKING} alt="Before and after — Oklahoma City" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             <div className="absolute bottom-0 left-0 right-0 p-3 text-white text-xs font-bold uppercase tracking-wide" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}>Before & After — Oklahoma City</div>
           </div>
         </div>
@@ -829,8 +809,8 @@ export default function FranchiseLander() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
             {[
               { label: "Franchise Fee", amount: "$60,000", desc: "Per territory. Includes territory rights, brand license, and the 60-day Momentum onboarding program." },
-              { label: "Recommended Capital", amount: "$350K–$400K", desc: "Minimum liquid capital recommended for first-year sustainability. Covers franchise fee, build-out, vehicle, marketing, and operating reserves.", highlight: true },
-              { label: "Royalty", amount: "6%–10%", desc: "Based on annual revenues. Includes ongoing field support, software platform, national marketing, and your franchise success coach." },
+              { label: "Minimum Capital", amount: "$400K+", desc: "Minimum liquid capital required for first-year sustainability. Covers franchise fee, build-out, vehicle, marketing, and operating reserves.", highlight: true },
+              { label: "Royalty", amount: "6%–10%", desc: "Based on annual revenues. Royalty percentages reduce as sales targets are achieved. Includes ongoing field support, software platform, national marketing, and your franchise success coach." },
             ].map(item => (
               <div key={item.label} className={`rounded-2xl p-8 text-center ${item.highlight ? "shadow-xl" : ""}`}
                 style={{ backgroundColor: item.highlight ? LH_NAVY : "#F8F9FA", border: item.highlight ? `2px solid ${LH_ORANGE}` : "none" }}>
@@ -868,8 +848,8 @@ export default function FranchiseLander() {
             { src: "/images/IMG_8179_100c1d9f.jpeg", label: "Fraser Valley, BC", w: "280px" },
             { src: "/images/IMG_8175_16a0d172.jpeg", label: "Raleigh, NC", w: "280px" },
             { src: "/images/1747_0d4047bf.JPG", label: "St. Louis, MO", w: "320px" },
-            { src: PHOTO_BEFORE_AFTER_OKC, label: "Oklahoma City, OK", w: "280px" },
-            { src: PHOTO_BEFORE_AFTER_PIT, label: "Pittsburgh, PA", w: "280px" },
+            { src: PHOTO_CAULKING, label: "Oklahoma City, OK", w: "280px" },
+            { src: PHOTO_BASEBOARD, label: "Pittsburgh, PA", w: "280px" },
           ].map(({ src, label, w }) => (
             <div key={label} className="flex-shrink-0 rounded-2xl overflow-hidden relative" style={{ width: w, height: "260px", scrollSnapAlign: "start" }}>
               <img src={src} alt={label} className="w-full h-full object-cover object-top" />
@@ -894,17 +874,17 @@ export default function FranchiseLander() {
           </Reveal>
           {/* Video */}
           <div className="rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <video controls className="w-full" poster="/images/colin-poster.png" style={{ aspectRatio: "16/9" }}>
+            <video controls className="w-full" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
           </div>
           {/* Body copy */}
           <div className="max-w-3xl mx-auto">
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Most franchise systems give you a brand and a manual. This one gives you direct access to one of North America's most accomplished entrepreneurial mentors — a 4x bestselling author who has trained over 110,000 entrepreneurs across 21 years. The system isn't just technology. It's the mind behind it.
+              Most franchise systems give you a brand and a manual. This one was built by one of North America's most accomplished entrepreneurs — a 4x bestselling author who has trained over 110,000 entrepreneurs across 21 years. As CEO and co-owner, Colin Sprake is actively involved in the growth and direction of every franchise location. The system isn't just technology. It's the entrepreneurial mind behind it.
             </p>
             <p className="text-gray-600 leading-relaxed mb-8">
-              Colin Sprake is the CEO and co-owner of Local Handyman Group. His books — including <em>Entrepreneur Success Stories</em>, <em>Stand Apart</em> (co-authored with Dan Kennedy), and <em>Power Principles For Success</em> (co-authored with Brian Tracy) — have shaped the business thinking of entrepreneurs across dozens of industries. As a Local Handyman franchisee, you don't just get a playbook. You get a mentor.
+              Colin Sprake is the CEO and co-owner of Local Handyman Group. His books — including <em>Entrepreneur Success Stories</em>, <em>Stand Apart</em> (co-authored with Dan Kennedy), and <em>Power Principles For Success</em> (co-authored with Brian Tracy) — have shaped the business thinking of entrepreneurs across dozens of industries. As a Local Handyman franchisee, you don't just get a playbook. You get direct access to the mind behind the system.
             </p>
             {/* Credential pills */}
             <div className="flex flex-wrap gap-3 mb-8 justify-center">
@@ -1034,6 +1014,38 @@ export default function FranchiseLander() {
           <p className="text-xs text-gray-400">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
         </div>
       </footer>
+
+      {/* ── SOURCES / FOOTNOTES ── */}
+      <section className="py-12 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-4">
+          <p className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Sources & Citations</p>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-3 text-xs text-gray-500 leading-relaxed">
+            <div>
+              <p className="font-semibold text-gray-600 mb-2">Market Size & Growth</p>
+              <p><sup>1</sup> "$700B home services market" — <a href="https://www.bloomberg.com/news/videos/2026-01-13/inside-the-home-renovation-boom-video" target="_blank" rel="noopener" className="underline hover:text-orange-600">Bloomberg, January 2026</a></p>
+              <p><sup>2</sup> "$1.4 trillion by end of decade" — <a href="https://www.researchandmarkets.com/report/united-states-home-service-market" target="_blank" rel="noopener" className="underline hover:text-orange-600">Research and Markets</a></p>
+              <p><sup>3</sup> US Home Services Industry sizing — <a href="https://www.ibisworld.com/united-states/industry/handyman-services/4069/" target="_blank" rel="noopener" className="underline hover:text-orange-600">IBISWorld</a></p>
+            </div>
+            <div>
+              <p className="font-semibold text-gray-600 mb-2">Demand & Supply Gap</p>
+              <p><sup>4</sup> "+150% booking demand since 2020" — <a href="https://www.angi.com/press/2024-state-of-home-spending-report" target="_blank" rel="noopener" className="underline hover:text-orange-600">Angi State of Home Spending, 2024</a></p>
+              <p><sup>5</sup> "4–8 week average wait" — <a href="https://www.abc.org/News-Media/News-Releases?Category=construction-backlog-indicator" target="_blank" rel="noopener" className="underline hover:text-orange-600">ABC Construction Backlog Indicator</a></p>
+              <p><sup>6</sup> "28% of service calls go unanswered" — <a href="https://www.servicetitan.com/" target="_blank" rel="noopener" className="underline hover:text-orange-600">ServiceTitan Industry Data</a></p>
+              <p><sup>7</sup> "20:1 job openings vs. workers" — <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/tradespeople-wanted-the-need-for-critical-trade-skills-in-the-us" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey, April 2024</a></p>
+            </div>
+            <div>
+              <p className="font-semibold text-gray-600 mb-2">Technology Adoption</p>
+              <p><sup>8</sup> "Bottom 7% / 2nd-to-last digitized industry" — <a href="https://www.mckinsey.com/capabilities/operations/our-insights/reinventing-construction-through-a-productivity-revolution" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey Global Institute, 2017</a></p>
+              <p><sup>9</sup> "Less than 1% of revenue on IT" — <a href="https://www.alexanderjarvis.com/wp-content/uploads/2021/12/Reinventing-Construction-Route-to-Higher-Productivity.pdf" target="_blank" rel="noopener" className="underline hover:text-orange-600">MGI Full Report (PDF)</a></p>
+            </div>
+            <div>
+              <p className="font-semibold text-gray-600 mb-2">Local Handyman</p>
+              <p><sup>10</sup> "1,600+ five-star reviews" — <a href="https://localhandymanreviews.com" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandymanreviews.com</a></p>
+              <p><sup>11</sup> "60-day launch program" — <a href="https://www.localhandyman.com/ignite" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandyman.com/ignite</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
