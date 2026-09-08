@@ -722,11 +722,9 @@ export default function FranchiseLander() {
               { label: "Calgary, AB", src: "https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/67fcdcee56be24f746e4ad2b.mp4#t=0.5" },
             ].map(({ label, src }) => (
               <div key={label} className="rounded-2xl overflow-hidden shadow-lg">
-              <div style={{ aspectRatio: "16/9" }}>
-                  <video controls tabIndex={0} aria-label={`Local Handyman ${label} partner testimonial`} preload="metadata" className="w-full h-full object-cover">
+              <video style={{ aspectRatio: "16/9" }} controls tabIndex={0} aria-label={`Local Handyman ${label} partner testimonial`} preload="metadata" className="w-full h-full object-cover">
                     <source src={src} type="video/mp4" />
                   </video>
-                </div>
                 <div className="p-4 bg-gray-50">
                   <p className="font-bold text-sm" style={{ color: LH_NAVY }}>Local Handyman {label}</p>
                 </div>
@@ -892,11 +890,9 @@ export default function FranchiseLander() {
           </div>
           </Reveal>
           {/* Video */}
-          <div className="rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <video controls tabIndex={0} aria-label="Your Unfair Advantage — Colin Sprake and the Local Handyman system" className="w-full" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
+          <video controls tabIndex={0} aria-label="Your Unfair Advantage — Colin Sprake and the Local Handyman system" className="w-full rounded-3xl shadow-2xl mb-10" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
-          </div>
           {/* Body copy */}
           <div className="max-w-3xl mx-auto">
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
