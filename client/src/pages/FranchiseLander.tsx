@@ -5,8 +5,8 @@
  * FDD COMPLIANCE: No earnings claims, no revenue figures, no financial projections
  * Sections: Nav → Hero+Form → Why Now → Why LH → How It Works → Franchisee Proof → Investment → FAQ → Final CTA
  */
-import { useState, useEffect, useRef } from "react";
-import { ChevronDown, CheckCircle, Play, MapPin, TrendingUp, Shield, Users, DollarSign, Clock, Star, Phone, Mail, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef, useId } from "react";
+import { ChevronDown, CheckCircle, MapPin, TrendingUp, Shield, Users, DollarSign, Clock, Star, Phone, Mail, ArrowRight } from "lucide-react";
 
 
 // Scroll reveal animation component
@@ -121,14 +121,20 @@ const whyItems = [
 
 function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Array<{id: string; message: string}>>([]);
+  const [sending, setSending] = useState(false);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => { if (errors.length) errorRef.current?.focus(); }, [errors]);
+  useEffect(() => { if (submitted) successRef.current?.showModal(); }, [submitted]);
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", zip: "", capitalConfirm: false });
 
   if (submitted) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <dialog ref={successRef} aria-labelledby="application-success-title" onCancel={() => setSubmitted(false)} className="fixed inset-0 z-[9999] m-auto p-4 bg-transparent backdrop:bg-black/60">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center relative animate-in fade-in zoom-in duration-300">
           <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: LH_ORANGE }} />
-          <h3 className="text-2xl font-black mb-2" style={{ fontFamily: "Montserrat, sans-serif", color: "#1C2B4A" }}>You're In. Here's What Happens Next.</h3>
+          <h3 id="application-success-title" className="text-2xl font-black mb-2" style={{ fontFamily: "Montserrat, sans-serif", color: "#1C2B4A" }}>You're In. Here's What Happens Next.</h3>
           <div className="mt-6 text-left space-y-4">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: LH_ORANGE }}>1</div>
@@ -157,15 +163,21 @@ function ApplicationForm() {
           </button>
           <p className="mt-3 text-xs text-gray-400">Check your email for a confirmation.</p>
         </div>
-      </div>
+      </dialog>
     );
   }
 
   return (
-    <form onSubmit={async (e) => {
+    <form noValidate aria-label="Franchise territory availability application" onSubmit={async (e) => {
         e.preventDefault();
+        if (sending) return;
+        const labels: Record<string, string> = { firstName: "First name", lastName: "Last name", email: "Email address", phone: "Phone number", zip: "Zip / postal code", capitalConfirm: "Capital confirmation" };
+        const invalid = Array.from(e.currentTarget.querySelectorAll<HTMLInputElement>("input")).filter(input => !input.validity.valid).map(input => ({id: input.id, message: `${labels[input.name]}: ${input.validationMessage}`}));
+        setErrors(invalid);
+        if (invalid.length) return;
+        setSending(true);
         try {
-          await fetch("https://localhandyman.app.n8n.cloud/webhook/franchise-lead", {
+          const response = await fetch("https://localhandyman.app.n8n.cloud/webhook/franchise-lead", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -175,9 +187,13 @@ function ApplicationForm() {
               page_url: window.location.href
             })
           });
-        } catch (err) {
-          console.error("Webhook error:", err);
+          if (!response.ok) throw new Error("Submission failed");
+        } catch {
+          setErrors([{id: "application-firstName", message: "Your application could not be sent. Please try again."}]);
+          setSending(false);
+          return;
         }
+        setSending(false);
         // Push lead data to GTM dataLayer
         if (typeof window !== 'undefined' && (window as any).dataLayer) {
           (window as any).dataLayer.push({
@@ -197,49 +213,53 @@ function ApplicationForm() {
         }
         setSubmitted(true);
       }} className="space-y-3">
+      {errors.length > 0 && <div ref={errorRef} id="application-errors" tabIndex={-1} role="alert" className="rounded-lg border border-red-700 p-3 text-sm text-red-800">
+        <p>Please correct the following:</p>
+        <ul className="list-disc pl-5">{errors.map(error => <li key={error.id}><a href={`#${error.id}`} onClick={(event) => { event.preventDefault(); document.getElementById(error.id)?.focus(); }}>{error.message}</a></li>)}</ul>
+      </div>}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>First Name *</label>
-          <input required value={form.firstName} onChange={e => setForm({...form, firstName: e.target.value})}
+          <label htmlFor="application-firstName" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>First Name *</label>
+          <input id="application-firstName" name="firstName" autoComplete="given-name" aria-invalid={errors.some(error => error.id === "application-firstName")} aria-describedby={errors.some(error => error.id === "application-firstName") ? "application-errors" : undefined} required value={form.firstName} onChange={e => setForm({...form, firstName: e.target.value})}
             className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
             placeholder="First name" />
         </div>
         <div>
-          <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Last Name *</label>
-          <input required value={form.lastName} onChange={e => setForm({...form, lastName: e.target.value})}
+          <label htmlFor="application-lastName" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Last Name *</label>
+          <input id="application-lastName" name="lastName" autoComplete="family-name" aria-invalid={errors.some(error => error.id === "application-lastName")} aria-describedby={errors.some(error => error.id === "application-lastName") ? "application-errors" : undefined} required value={form.lastName} onChange={e => setForm({...form, lastName: e.target.value})}
             className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
             placeholder="Last name" />
         </div>
       </div>
       <div>
-        <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Email Address *</label>
-        <input required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+        <label htmlFor="application-email" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Email Address *</label>
+        <input id="application-email" name="email" autoComplete="email" aria-invalid={errors.some(error => error.id === "application-email")} aria-describedby={errors.some(error => error.id === "application-email") ? "application-errors" : undefined} required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
           className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
           placeholder="your@email.com" />
       </div>
       <div>
-        <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Phone Number *</label>
-        <input required type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
+        <label htmlFor="application-phone" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Phone Number *</label>
+        <input id="application-phone" name="phone" autoComplete="tel" aria-invalid={errors.some(error => error.id === "application-phone")} aria-describedby={errors.some(error => error.id === "application-phone") ? "application-errors" : undefined} required type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
           className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
           placeholder="(555) 000-0000" />
       </div>
       <div>
-        <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Zip / Postal Code *</label>
-        <input required value={form.zip} onChange={e => setForm({...form, zip: e.target.value})}
+        <label htmlFor="application-zip" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Zip / Postal Code *</label>
+        <input id="application-zip" name="zip" autoComplete="postal-code" aria-invalid={errors.some(error => error.id === "application-zip")} aria-describedby={errors.some(error => error.id === "application-zip") ? "application-errors" : undefined} required value={form.zip} onChange={e => setForm({...form, zip: e.target.value})}
           className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
           placeholder="Enter your zip or postal code" />
       </div>
       <div className="flex items-start gap-2 py-1">
-        <input required type="checkbox" id="capitalConfirm" checked={form.capitalConfirm} onChange={e => setForm({...form, capitalConfirm: e.target.checked})}
+        <input required type="checkbox" id="capitalConfirm" name="capitalConfirm" aria-invalid={errors.some(error => error.id === "capitalConfirm")} aria-describedby={errors.some(error => error.id === "capitalConfirm") ? "application-errors" : undefined} checked={form.capitalConfirm} onChange={e => setForm({...form, capitalConfirm: e.target.checked})}
           className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-orange-500" />
         <label htmlFor="capitalConfirm" className="text-xs text-gray-600 leading-tight">
           I confirm I have access to a minimum of <strong>$400,000 in liquid capital</strong> or equivalent financing capacity.
         </label>
       </div>
-      <button type="submit"
+      <button type="submit" disabled={sending} aria-busy={sending}
         className="w-full py-4 rounded-xl font-black text-white text-base uppercase tracking-wider transition-all duration-150 active:scale-[0.98] hover:brightness-110"
         style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif", letterSpacing: "0.08em" }}>
-        CHECK AVAILABILITY →
+        {sending ? "SENDING…" : "CHECK AVAILABILITY →"}
       </button>
       <p className="text-gray-400 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
     </form>
@@ -248,31 +268,46 @@ function ApplicationForm() {
 
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+  const id = useId();
   return (
-    <div className="border-b border-gray-200 last:border-0">
-      <button onClick={() => setOpen(!open)}
+    <li className="border-b border-gray-200 last:border-0">
+      <h3>
+      <button type="button" id={`${id}-trigger`} aria-expanded={open} aria-controls={`${id}-answer`} onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-5 text-left gap-4 hover:text-orange-600 transition-colors group">
         <span className="font-bold text-sm md:text-base" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>{q}</span>
-        <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} style={{ color: LH_ORANGE }} />
+        <ChevronDown aria-hidden="true" className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} style={{ color: LH_ORANGE }} />
       </button>
-      {open && <p className="pb-5 text-gray-600 text-sm leading-relaxed">{a}</p>}
-    </div>
+      </h3>
+      <p id={`${id}-answer`} hidden={!open} className="pb-5 text-gray-600 text-sm leading-relaxed">{a}</p>
+    </li>
   );
 }
 
 export default function FranchiseLander() {
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: "Montserrat, Open Sans, sans-serif" }}>
+    <div onClick={(event) => {
+      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+      const href = link?.getAttribute("href");
+      if (!href || href === "#") return;
+      const section = document.getElementById(href.slice(1));
+      if (!section) return;
+      event.preventDefault();
+      const target = (href === "#apply" ? section.querySelector<HTMLElement>("input") : section.querySelector<HTMLElement>("h1, h2, h3")) ?? section;
+      if (!target.matches("input, button, a[href]")) target.tabIndex = -1;
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.focus({ preventScroll: true });
+    }} className="min-h-screen bg-white" style={{ fontFamily: "Montserrat, Open Sans, sans-serif" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-3">Skip to main content</a>
       {/* ── NAV ── */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+      <nav aria-label="Main navigation" className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <img src={LOGO_URL} alt="Local Handyman" className="h-9 w-auto" />
-          <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
-            <a href="#why-now" className="hover:text-orange-600 transition-colors">Why Now</a>
-            <a href="#how-it-works" className="hover:text-orange-600 transition-colors">How It Works</a>
-            <a href="#investment" className="hover:text-orange-600 transition-colors">Investment</a>
-            <a href="#faq" className="hover:text-orange-600 transition-colors">FAQ</a>
-          </div>
+          <ul role="list" className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+            <li><a href="#why-now" className="hover:text-orange-600 transition-colors">Why Now</a></li>
+            <li><a href="#how-it-works" className="hover:text-orange-600 transition-colors">How It Works</a></li>
+            <li><a href="#investment" className="hover:text-orange-600 transition-colors">Investment</a></li>
+            <li><a href="#faq" className="hover:text-orange-600 transition-colors">FAQ</a></li>
+          </ul>
           <a href="#apply"
             className="px-5 py-2.5 rounded-lg text-white text-sm font-black uppercase tracking-wide transition-all hover:brightness-110 active:scale-95"
             style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
@@ -281,6 +316,7 @@ export default function FranchiseLander() {
         </div>
       </nav>
 
+      <main id="main-content" tabIndex={-1}>
       {/* ── HERO + FORM — full-bleed Kona-style ── */}
       <section id="apply" className="relative min-h-screen flex items-center overflow-hidden">
         {/* Full-bleed background */}
@@ -301,10 +337,10 @@ export default function FranchiseLander() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-none mb-4 md:mb-6 uppercase"
-                style={{ fontFamily: "Montserrat, sans-serif", letterSpacing: "-0.02em", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}>
+                style={{ fontFamily: "Montserrat, sans-serif", letterSpacing: "-0.02em", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}><span className="sr-only">Dominate a $700B Industry Still Running on Pencil & Paper.</span><span aria-hidden="true">
                 Dominate a<br />$700B Industry<br />
                 <span style={{ color: LH_ORANGE }}>Still Running on Pencil & Paper.</span>
-              </h1>
+              </span></h1>
 
               <p className="text-white/85 text-lg leading-relaxed mb-8 max-w-lg" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
                 McKinsey ranks the trades as the 2nd-to-last digitized industry on Earth. For forward-thinking investors, this is the dip — recession-proof, AI-proof, and backed by $700B in annual demand. This window won't be open forever.
@@ -353,32 +389,15 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Investment Thesis</p>
-            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>
+            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Own a Business That AI Will Never Replace.</span><span aria-hidden="true">
               Own a Business That AI<br />Will Never Replace.
-            </h2>
+            </span></h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
               $700 billion in annual demand. Recession-proof. AI-proof. And the competition is still running on paper and pencil. High demand, slow to adopt technology, and safe from disruption — this is the rare business that only grows as everything else gets automated away.
             </p>
           </div>
 
-          {/* Video placeholder */}
-          <div className="rounded-2xl overflow-hidden relative cursor-pointer group max-w-3xl mx-auto mb-12"
-            style={{ backgroundColor: LH_NAVY, aspectRatio: "16/9" }}>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-                style={{ backgroundColor: LH_ORANGE }}>
-                <Play className="w-8 h-8 text-white ml-1" />
-              </div>
-              <p className="text-white font-bold text-lg" style={{ fontFamily: "Montserrat, sans-serif" }}>Watch: The Local Handyman Opportunity</p>
-              <p className="text-white/60 text-sm mt-1">3 minutes · Franchise overview</p>
-            </div>
-            <div className="absolute inset-0 opacity-10"
-              style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px)" }} />
-            <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide text-white"
-              style={{ backgroundColor: LH_ORANGE }}>
-              VIDEO PLACEHOLDER
-            </div>
-          </div>
+          <p className="text-center text-gray-600 mb-12">Explore the franchise opportunity below, or apply to speak with our team.</p>
 
           {/* Your Competition Is Stuck in 1987 — Clean Two Column */}
           <div className="rounded-2xl overflow-hidden shadow-sm mt-12" style={{ border: "1px solid #e5e7eb" }}>
@@ -388,9 +407,9 @@ export default function FranchiseLander() {
                 <img src={HANDYMAN_1987_IMG} alt="Handyman stuck in 1987 — paper invoices, cash, no technology" className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
-                  <h4 className="font-black text-2xl md:text-3xl uppercase text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                  <h3 className="font-black text-2xl md:text-3xl uppercase text-white" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Your Competition Is Stuck in 1987</span><span aria-hidden="true">
                     Your Competition<br />Is Stuck in 1987
-                  </h4>
+                  </span></h3>
                 </div>
               </div>
               {/* Right — Bottom 7% headline + evidence */}
@@ -555,9 +574,9 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
             <Reveal><p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Ownership Model</p></Reveal>
-            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>
+            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">You Run the Business. Not the Repairs.</span><span aria-hidden="true">
               You Run the Business.<br />Not the Repairs.
-            </h2>
+            </span></h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">You don't need to be "handy." You don't need trades experience. You're the director — hiring skilled technicians, managing the system, and growing the business. Think of it like owning a restaurant without being the chef.</p>
           </div>
 
@@ -581,9 +600,9 @@ export default function FranchiseLander() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <Reveal><p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Solution</p></Reveal>
-              <h2 className="text-3xl md:text-4xl font-black uppercase mb-6" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>
+              <h2 className="text-3xl md:text-4xl font-black uppercase mb-6" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Local Handyman Is Built for This Moment.</span><span aria-hidden="true">
                 Local Handyman Is Built<br />for This Moment.
-              </h2>
+              </span></h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
                 While the rest of the industry runs on paper calendars and missed calls, Local Handyman operates on Technology-driven dispatch, streamlined booking, real-time customer communication, and a marketing engine that fills your calendar before you open the doors.
               </p>
@@ -617,9 +636,9 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Process</p>
-            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4 text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4 text-white" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">From Decision to Revenue in 60 Days</span><span aria-hidden="true">
               From Decision to Revenue<br />in 60 Days
-            </h2>
+            </span></h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((step, i) => (
@@ -647,10 +666,10 @@ export default function FranchiseLander() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>Franchisee Story</p>
-              <h2 className="text-3xl md:text-4xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}>
+              <h2 className="text-3xl md:text-4xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">"I Had a Waiting List on My Launch Week. The Demand Is Real."</span><span aria-hidden="true">
                 "I Had a Waiting List<br />on My Launch Week.<br />
                 <span style={{ color: LH_ORANGE }}>The Demand Is Real."</span>
-              </h2>
+              </span></h2>
               <p className="text-white/75 text-lg leading-relaxed mb-8">
                 "I had no trades experience at all — I came from a corporate technology and operations background. My whole tech team was booked the first week we opened. I had a waiting list on launch week. The demand in this market is real, and Local Handyman gave me the brand and systems to capture it."
               </p>
@@ -704,7 +723,7 @@ export default function FranchiseLander() {
             ].map(({ label, src }) => (
               <div key={label} className="rounded-2xl overflow-hidden shadow-lg">
               <div style={{ aspectRatio: "16/9" }}>
-                  <video controls preload="metadata" className="w-full h-full object-cover">
+                  <video controls tabIndex={0} aria-label={`Local Handyman ${label} partner testimonial`} preload="metadata" className="w-full h-full object-cover">
                     <source src={src} type="video/mp4" />
                   </video>
                 </div>
@@ -761,7 +780,7 @@ export default function FranchiseLander() {
         <div className="text-center py-12 px-4">
           <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE }}>Our Scope</p>
-          <h2 className="text-3xl md:text-4xl font-black uppercase" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>We Handle What Homeowners<br />Actually Call About.</h2>
+          <h2 className="text-3xl md:text-4xl font-black uppercase" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">We Handle What Homeowners Actually Call About.</span><span aria-hidden="true">We Handle What Homeowners<br />Actually Call About.</span></h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base leading-relaxed">We don't do electrical, roofing, or major plumbing — those require specialized licensing. What we do is everything else: the 80% of home repair calls that solo operators fumble because they're disorganized, overbooked, or unreachable. Drywall repair, door and hardware installation, interior painting, tile and backsplash, furniture assembly, shelving and mounting, deck and fence repair, caulking and weatherproofing — backed by Technology-driven dispatch, streamlined booking, and a tech stack that gets your team to the job faster, more specialized, and more effective than any single-van operator in your market.</p>
           </Reveal>
         </div>
@@ -801,9 +820,9 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
             <Reveal><p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>Investment</p></Reveal>
-            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>
+            <h2 className="text-3xl md:text-4xl font-black uppercase mb-4" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">What It Costs to Get In While the Window Is Open.</span><span aria-hidden="true">
               What It Costs to Get In<br />While the Window Is Open.
-            </h2>
+            </span></h2>
             <p className="text-gray-600 max-w-xl mx-auto">We believe in full transparency. Here's what it costs to open a Local Handyman franchise — and what you get for it.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
@@ -867,14 +886,14 @@ export default function FranchiseLander() {
           <Reveal>
           <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>Your Unfair Advantage</p>
-            <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>
+            <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">The Unfair Advantage. A System Built by a 4x Bestselling Author.</span><span aria-hidden="true">
               The Unfair Advantage.<br />A System Built by a 4x Bestselling Author.
-            </h2>
+            </span></h2>
           </div>
           </Reveal>
           {/* Video */}
           <div className="rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <video controls className="w-full" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
+            <video controls tabIndex={0} aria-label="Your Unfair Advantage — Colin Sprake and the Local Handyman system" className="w-full" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
           </div>
@@ -896,7 +915,7 @@ export default function FranchiseLander() {
             </div>
             <blockquote className="border-l-4 pl-5 italic text-gray-600 leading-relaxed" style={{ borderColor: LH_ORANGE }}>
               "We want you to be a business owner where your income continues no matter what your circumstances are. That's what a real franchise system does — it removes the ceiling."
-              <footer className="mt-2 text-sm font-bold not-italic" style={{ color: LH_NAVY }}>— Colin Sprake, CEO, Local Handyman Group</footer>
+              <p className="mt-2 text-sm font-bold not-italic" style={{ color: LH_NAVY }}>— Colin Sprake, CEO, Local Handyman Group</p>
             </blockquote>
           </div>
         </div>
@@ -907,9 +926,9 @@ export default function FranchiseLander() {
       <section className="py-20" style={{ backgroundColor: LH_NAVY }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
           <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: LH_ORANGE }}>Limited Territories Available</p>
-          <h2 className="text-3xl md:text-5xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}>
+          <h2 className="text-3xl md:text-5xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Territories Are Closing. Is Yours Still Available?</span><span aria-hidden="true">
             Territories Are Closing.<br />Is Yours Still Available?
-          </h2>
+          </span></h2>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Every day you wait, someone else is looking at your territory. Submit your information now — it takes 90 seconds and there's zero obligation.
           </p>
@@ -997,55 +1016,57 @@ export default function FranchiseLander() {
               Everything You Want to Know
             </h2>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+          <ul role="list" className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
             {faqs.map(faq => <FAQItem key={faq.q} q={faq.q} a={faq.a} />)}
-          </div>
+          </ul>
         </div>
       </section>
 
+      </main>
       {/* ── FOOTER ── */}
       <footer className="py-8 border-t border-gray-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <img src={LOGO_URL} alt="Local Handyman" className="h-8 w-auto" />
           <div className="flex items-center gap-6 text-sm text-gray-500">
-            <a href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone className="w-3.5 h-3.5" />778-770-4494</a>
-            <a href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
+            <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone className="w-3.5 h-3.5" />778-770-4494</a>
+            <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
           </div>
           <p className="text-xs text-gray-400">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
         </div>
-      </footer>
 
       {/* ── SOURCES / FOOTNOTES ── */}
       <section className="py-12 bg-gray-50 border-t border-gray-100">
         <div className="max-w-4xl mx-auto px-4">
-          <p className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Sources & Citations</p>
+          <h2 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Sources & Citations</h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-3 text-xs text-gray-500 leading-relaxed">
             <div>
-              <p className="font-semibold text-gray-600 mb-2">Market Size & Growth</p>
-              <p><sup>1</sup> "$700B home services market" — <a href="https://www.bloomberg.com/news/videos/2026-01-13/inside-the-home-renovation-boom-video" target="_blank" rel="noopener" className="underline hover:text-orange-600">Bloomberg, January 2026</a></p>
-              <p><sup>2</sup> "$1.4 trillion by end of decade" — <a href="https://www.researchandmarkets.com/report/united-states-home-service-market" target="_blank" rel="noopener" className="underline hover:text-orange-600">Research and Markets</a></p>
-              <p><sup>3</sup> US Home Services Industry sizing — <a href="https://www.ibisworld.com/united-states/industry/handyman-services/4069/" target="_blank" rel="noopener" className="underline hover:text-orange-600">IBISWorld</a></p>
-            </div>
+              <h3 className="font-semibold text-gray-600 mb-2">Market Size & Growth</h3><ul role="list">
+              <li><sup>1</sup> "$700B home services market" — <a href="https://www.bloomberg.com/news/videos/2026-01-13/inside-the-home-renovation-boom-video" target="_blank" rel="noopener" className="underline hover:text-orange-600">Bloomberg, January 2026</a></li>
+              <li><sup>2</sup> "$1.4 trillion by end of decade" — <a href="https://www.researchandmarkets.com/report/united-states-home-service-market" target="_blank" rel="noopener" className="underline hover:text-orange-600">Research and Markets</a></li>
+              <li><sup>3</sup> US Home Services Industry sizing — <a href="https://www.ibisworld.com/united-states/industry/handyman-services/4069/" target="_blank" rel="noopener" className="underline hover:text-orange-600">IBISWorld</a></li>
+            </ul></div>
             <div>
-              <p className="font-semibold text-gray-600 mb-2">Demand & Supply Gap</p>
-              <p><sup>4</sup> "+150% booking demand since 2020" — <a href="https://www.angi.com/press/2024-state-of-home-spending-report" target="_blank" rel="noopener" className="underline hover:text-orange-600">Angi State of Home Spending, 2024</a></p>
-              <p><sup>5</sup> "4–8 week average wait" — <a href="https://www.abc.org/News-Media/News-Releases?Category=construction-backlog-indicator" target="_blank" rel="noopener" className="underline hover:text-orange-600">ABC Construction Backlog Indicator</a></p>
-              <p><sup>6</sup> "28% of service calls go unanswered" — <a href="https://www.servicetitan.com/" target="_blank" rel="noopener" className="underline hover:text-orange-600">ServiceTitan Industry Data</a></p>
-              <p><sup>7</sup> "20:1 job openings vs. workers" — <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/tradespeople-wanted-the-need-for-critical-trade-skills-in-the-us" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey, April 2024</a></p>
-            </div>
+              <h3 className="font-semibold text-gray-600 mb-2">Demand & Supply Gap</h3><ul role="list">
+              <li><sup>4</sup> "+150% booking demand since 2020" — <a href="https://www.angi.com/press/2024-state-of-home-spending-report" target="_blank" rel="noopener" className="underline hover:text-orange-600">Angi State of Home Spending, 2024</a></li>
+              <li><sup>5</sup> "4–8 week average wait" — <a href="https://www.abc.org/News-Media/News-Releases?Category=construction-backlog-indicator" target="_blank" rel="noopener" className="underline hover:text-orange-600">ABC Construction Backlog Indicator</a></li>
+              <li><sup>6</sup> "28% of service calls go unanswered" — <a href="https://www.servicetitan.com/" target="_blank" rel="noopener" className="underline hover:text-orange-600">ServiceTitan Industry Data</a></li>
+              <li><sup>7</sup> "20:1 job openings vs. workers" — <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/tradespeople-wanted-the-need-for-critical-trade-skills-in-the-us" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey, April 2024</a></li>
+            </ul></div>
             <div>
-              <p className="font-semibold text-gray-600 mb-2">Technology Adoption</p>
-              <p><sup>8</sup> "Bottom 7% / 2nd-to-last digitized industry" — <a href="https://www.mckinsey.com/capabilities/operations/our-insights/reinventing-construction-through-a-productivity-revolution" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey Global Institute, 2017</a></p>
-              <p><sup>9</sup> "Less than 1% of revenue on IT" — <a href="https://www.alexanderjarvis.com/wp-content/uploads/2021/12/Reinventing-Construction-Route-to-Higher-Productivity.pdf" target="_blank" rel="noopener" className="underline hover:text-orange-600">MGI Full Report (PDF)</a></p>
-            </div>
+              <h3 className="font-semibold text-gray-600 mb-2">Technology Adoption</h3><ul role="list">
+              <li><sup>8</sup> "Bottom 7% / 2nd-to-last digitized industry" — <a href="https://www.mckinsey.com/capabilities/operations/our-insights/reinventing-construction-through-a-productivity-revolution" target="_blank" rel="noopener" className="underline hover:text-orange-600">McKinsey Global Institute, 2017</a></li>
+              <li><sup>9</sup> "Less than 1% of revenue on IT" — <a href="https://www.alexanderjarvis.com/wp-content/uploads/2021/12/Reinventing-Construction-Route-to-Higher-Productivity.pdf" target="_blank" rel="noopener" className="underline hover:text-orange-600">MGI Full Report (PDF)</a></li>
+            </ul></div>
             <div>
-              <p className="font-semibold text-gray-600 mb-2">Local Handyman</p>
-              <p><sup>10</sup> "1,600+ five-star reviews" — <a href="https://localhandymanreviews.com" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandymanreviews.com</a></p>
-              <p><sup>11</sup> "60-day launch program" — <a href="https://www.localhandyman.com/ignite" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandyman.com/ignite</a></p>
-            </div>
+              <h3 className="font-semibold text-gray-600 mb-2">Local Handyman</h3><ul role="list">
+              <li><sup>10</sup> "1,600+ five-star reviews" — <a href="https://localhandymanreviews.com" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandymanreviews.com</a></li>
+              <li><sup>11</sup> "60-day launch program" — <a href="https://www.localhandyman.com/ignite" target="_blank" rel="noopener" className="underline hover:text-orange-600">localhandyman.com/ignite</a></li>
+            </ul></div>
           </div>
         </div>
       </section>
+      </footer>
     </div>
   );
 }
+
