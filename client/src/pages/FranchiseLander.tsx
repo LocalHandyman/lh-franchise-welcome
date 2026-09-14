@@ -1023,7 +1023,7 @@ export default function FranchiseLander() {
       <footer className="py-8 border-t border-gray-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <img src={LOGO_URL} alt="Local Handyman" className="h-8 w-auto" />
-          <div className="flex items-center gap-6 text-sm text-gray-500">
+          <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-500">
             <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone className="w-3.5 h-3.5" />778-770-4494</a>
             <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
           </div>
