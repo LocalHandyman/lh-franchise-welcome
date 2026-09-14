@@ -3,6 +3,7 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "routes": [
+    { "src": "/ignite/?", "dest": "/ignite/index.html", "headers": { "X-Robots-Tag": "noindex, follow" } },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

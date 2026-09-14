@@ -14,5 +14,6 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
+    rollupOptions: { input: { main: path.resolve(__dirname, "client/index.html"), ignite: path.resolve(__dirname, "client/ignite/index.html") } },
   },
 });
