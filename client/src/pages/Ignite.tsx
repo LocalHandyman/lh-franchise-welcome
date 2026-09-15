@@ -57,7 +57,7 @@ export default function Ignite() {
     <main id="ignite-main">
       <section className="ig-hero"><div className="ig-container ig-hero-grid">
         <div><p className="ig-eyebrow">LOCAL HANDYMAN / IGNITE</p><h1>Don’t pick up<br />the hammer.<br /><span>Run the business.</span></h1><p className="ig-hero-copy">Build Success with Proven Systems and Unmatched Support</p><Booking location="hero" /><a className="ig-text-link ig-hero-secondary" href="#the-series"><Play size={15} aria-hidden="true" /> Start with the four key questions</a><div className="ig-hero-note"><span /> Your first step toward becoming a Success Partner.</div></div>
-        <figure className="ig-hero-film"><Video id="677aeb68b0a11f29d6c5eb3d" poster="675ff435fb63bc30765fb086.png" title="A welcome from Colin Sprake" /><figcaption><span className="ig-film-label">START HERE</span><strong>Hear from Colin Sprake</strong><span>Local Handyman Owner and Entrepreneurial Mentor</span></figcaption></figure>
+        <figure className="ig-hero-film"><Video id="677aeb68b0a11f29d6c5eb3d" poster="675ff435fb63bc30765fb086.png" title="A welcome from Colin Sprake" /></figure>
       </div></section>
       <div className="ig-strip"><div className="ig-container"><span><Check size={18} aria-hidden="true" /> No trades experience needed</span><span><Check size={18} aria-hidden="true" /> Systems for business owners</span><span><Check size={18} aria-hidden="true" /> Support beyond your launch</span></div></div>
       <section className="ig-section"><div className="ig-container">
