@@ -10,7 +10,7 @@
 .ig-button{border-radius:4px;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 14px #f4511e20}
 .ig-button:hover{background:#d83e10}
 .ig-hero{padding:92px 0}
-.ig-hero-grid{grid-template-columns:1.05fr 1fr;gap:48px}
+.ig-hero-grid{max-width:1360px;grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);gap:44px}
 .ig-hero-film{border-radius:10px;box-shadow:0 20px 60px #0004}
 .ig-hero-copy{max-width:500px!important}
 .ig-strip{background:#0a0a0a;border:0;color:#fff}
@@ -39,3 +39,22 @@
 .ig-footer>.ig-container>p{font-size:11px}
 @media(max-width:900px){.ig-hero{padding:64px 0}.ig-hero-grid{gap:28px}.ig-section{padding:64px 0}}
 @media(max-width:640px){.ig-hero{padding:48px 0}.ig-hero-grid{grid-template-columns:1fr;gap:32px}.ig-header .ig-button{font-size:9px;letter-spacing:.02em}.ig-section{padding:54px 0}.ig-strip span{font-size:12px}.ig-step-body{padding:22px 16px}.ig-faq details{padding:0 16px}.ig-faq summary{font-size:14px}.ig-final{padding:60px 0}.ig-step-number{font-size:15px}}
+
+/* Keep the section shortcuts available on smaller screens. */
+.ig-header nav a{display:flex;align-items:center;min-height:44px;text-decoration:none}
+.ig-header nav a+a:before{content:"";height:14px;border-left:1px solid #d8d8d8;margin-right:27px}
+@media(max-width:900px){
+ .ig-header-inner{height:auto;min-height:88px;display:grid;grid-template-columns:1fr auto;gap:0 20px;padding-top:8px}
+ .ig-header nav{display:flex;grid-column:1/-1;grid-row:2;justify-content:center;border-top:1px solid #eee;gap:24px;font-size:12px}
+ .ig-header nav a+a:before{margin-right:24px}
+ .ignite section[id],.ignite main{scroll-margin-top:142px}
+ .ig-hero-grid{grid-template-columns:1fr;max-width:760px;gap:32px}
+ .ig-hero h1{font-size:clamp(40px,6vw,56px)}
+}
+@media(max-width:640px){
+ .ig-header-inner{min-height:74px}
+ .ig-header nav{gap:17px;font-size:11px}
+ .ig-header nav a+a:before{margin-right:17px}
+ .ignite section[id],.ignite main{scroll-margin-top:124px}
+ .ig-hero h1{font-size:clamp(36px,8.5vw,48px)}
+}
