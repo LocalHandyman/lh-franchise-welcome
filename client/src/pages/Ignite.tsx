@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowRight, Check, ChevronDown, Play, Users, TrendingUp, ShieldCheck, Compass } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, ChevronDown, Play, Users, TrendingUp, ShieldCheck, Compass, Menu, X } from "lucide-react";
 import "./ignite.css";
 
 const MEDIA = "https://storage.googleapis.com/msgsndr/ZsBUSW0nlx5d5Mjpk3ph/media/";
@@ -47,13 +47,44 @@ function Heading({ eyebrow, title, children }: { eyebrow: string; title: string;
 }
 
 export default function Ignite() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDialogElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const dialog = menuRef.current;
+    if (!menuOpen || !dialog) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+    const desktop = window.matchMedia("(min-width: 901px)");
+    const closeOnDesktop = () => { if (desktop.matches) setMenuOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => {
+      desktop.removeEventListener("change", closeOnDesktop);
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      menuButtonRef.current?.focus({ preventScroll: true });
+    };
+  }, [menuOpen]);
   return <div className="ignite">
     <a href="#ignite-main" className="ig-skip">Skip to content</a>
     <header className="ig-header"><div className="ig-container ig-header-inner">
       <a href="#ignite-main" aria-label="Local Handyman Ignite, top of page"><img src="/images/handymanlogo_d9f89eaa.png" alt="Local Handyman" width="135" height="67" /></a>
       <nav aria-label="Ignite page"><a href="#partners">Testimonials</a><a href="#your-journey">How It Works</a><a href="#questions">FAQs</a></nav>
       <Booking location="header" />
+      <button ref={menuButtonRef} className="ig-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded={menuOpen} aria-controls="ig-mobile-menu" onClick={() => setMenuOpen(true)}><Menu aria-hidden="true" /></button>
     </div></header>
+    <dialog ref={menuRef} id="ig-mobile-menu" className="ig-mobile-menu" aria-labelledby="ig-menu-title" onCancel={() => setMenuOpen(false)} onClick={event => { if (event.target === event.currentTarget) setMenuOpen(false); }}>
+      <div className="ig-menu-panel">
+        <div className="ig-menu-heading"><span id="ig-menu-title">Explore Ignite</span><button type="button" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)}><X aria-hidden="true" /></button></div>
+        <nav aria-label="Mobile Ignite navigation">
+          <a href="#partners" onClick={() => setMenuOpen(false)}>Testimonials <ArrowRight aria-hidden="true" /></a>
+          <a href="#your-journey" onClick={() => setMenuOpen(false)}>How It Works <ArrowRight aria-hidden="true" /></a>
+          <a href="#questions" onClick={() => setMenuOpen(false)}>FAQs <ArrowRight aria-hidden="true" /></a>
+        </nav>
+        <div onClick={() => setMenuOpen(false)}><Booking location="mobile-menu" /></div>
+      </div>
+    </dialog>
     <main id="ignite-main">
       <section className="ig-hero"><div className="ig-container ig-hero-grid">
         <div><p className="ig-eyebrow">LOCAL HANDYMAN / IGNITE</p><h1>Don’t pick up<br />the hammer.<br /><span>Run the business.</span></h1><p className="ig-hero-copy">Build Success with Proven Systems and Unmatched Support</p><Booking location="hero" /><a className="ig-text-link ig-hero-secondary" href="#the-series"><Play size={15} aria-hidden="true" /> Start with the four key questions</a><div className="ig-hero-note"><span /> Your first step toward becoming a Success Partner.</div></div>
