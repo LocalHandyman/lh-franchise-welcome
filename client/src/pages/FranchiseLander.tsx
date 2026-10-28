@@ -5,7 +5,7 @@
  * FDD COMPLIANCE: No earnings claims, no revenue figures, no financial projections
  * Sections: Nav → Hero+Form → Why Now → Why LH → How It Works → Franchisee Proof → Investment → FAQ → Final CTA
  */
-import { useState, useEffect, useRef, useId } from "react";
+import { useState, useEffect, useRef, useId, type ChangeEvent, type KeyboardEvent } from "react";
 import { ChevronDown, CheckCircle, MapPin, TrendingUp, Shield, Users, DollarSign, Clock, Star, Phone, Mail, ArrowRight } from "lucide-react";
 
 
@@ -119,21 +119,131 @@ const whyItems = [
   { icon: Clock, title: "60-Day Momentum Launch", desc: "Our proprietary 60-day program supports you in becoming a confident business operator — covering cashflow, sales, marketing, and operations." },
 ];
 
+const REQUIRED_MESSAGES: Record<string, string> = {
+  firstName: "Enter your first name.",
+  lastName: "Enter your last name.",
+  email: "Enter your email address.",
+  phone: "Enter your phone number.",
+  zip: "Enter your zip or postal code.",
+  capitalConfirm: "Confirm you have access to the minimum liquid capital to continue.",
+};
+
+// Plain-language message for an invalid field, or "" when it is valid.
+function fieldError(input: HTMLInputElement) {
+  if (input.validity.valueMissing) return REQUIRED_MESSAGES[input.name] ?? "This field is required.";
+  if (input.validity.typeMismatch && input.type === "email") return "Enter an email address in the format name@example.com.";
+  return input.validity.valid ? "" : input.validationMessage;
+}
+
+function TextField({ id, name, label, type = "text", autoComplete, placeholder, value, error, onChange }: {
+  id: string; name: string; label: string; type?: string; autoComplete: string; placeholder: string; value: string; error?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <div>
+      {/* The asterisk is visual only; the input's required state tells screen readers. */}
+      <label htmlFor={id} className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>{label} <span aria-hidden="true">*</span></label>
+      <input id={id} name={name} type={type} autoComplete={autoComplete} required value={value} onChange={onChange}
+        aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined}
+        className={`w-full px-3 py-2.5 rounded-lg bg-gray-50 border text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all ${error ? "border-red-700" : "border-gray-200"}`}
+        placeholder={placeholder} />
+      {error && <p id={`${id}-error`} className="mt-1 text-xs font-semibold text-red-700">{error}</p>}
+    </div>
+  );
+}
+
+const OWNER_PHOTOS = [
+  { src: "/images/IMG_8179_100c1d9f.jpeg", label: "Fraser Valley, BC", w: "280px" },
+  { src: "/images/IMG_8175_16a0d172.jpeg", label: "Raleigh, NC", w: "280px" },
+  { src: "/images/1747_0d4047bf.JPG", label: "St. Louis, MO", w: "320px" },
+  { src: PHOTO_CAULKING, label: "Oklahoma City, OK", w: "280px" },
+  { src: PHOTO_BASEBOARD, label: "Pittsburgh, PA", w: "280px" },
+];
+
+// Horizontally scrolling owner photos (AudioEye #48/#49): a named, focusable region holding a list,
+// scrolled with Left/Right/Home/End when focused and with Previous/Next buttons, which work in a
+// screen reader's browse mode where arrow keys are taken by the reader. aria-disabled (not disabled)
+// keeps focus on a button when it reaches the end.
+function OwnerPhotoStrip() {
+  const scroller = useRef<HTMLUListElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const update = () => {
+    const el = scroller.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 1);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 1);
+  };
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  const scroll = (to: "prev" | "next" | "start" | "end") => {
+    const el = scroller.current;
+    if (!el) return;
+    const behavior: ScrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const step = (el.querySelector("li")?.getBoundingClientRect().width ?? 280) + 16;
+    if (to === "start") el.scrollTo({ left: 0, behavior });
+    else if (to === "end") el.scrollTo({ left: el.scrollWidth, behavior });
+    else el.scrollBy({ left: to === "next" ? step : -step, behavior });
+  };
+  const onKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
+    const keys: Record<string, "prev" | "next" | "start" | "end"> = { ArrowLeft: "prev", ArrowRight: "next", Home: "start", End: "end" };
+    const to = keys[e.key];
+    if (!to) return;
+    e.preventDefault();
+    scroll(to);
+  };
+  const buttonClass = "w-11 h-11 rounded-full flex items-center justify-center bg-white/10 text-white border border-white/30 hover:bg-white/20 aria-disabled:opacity-40 aria-disabled:cursor-not-allowed transition-colors";
+  return (
+    <div>
+      <ul ref={scroller} id="owner-photos" role="list" tabIndex={0} aria-label={`Franchise location photos, ${OWNER_PHOTOS.length} locations. Use the left and right arrow keys or the buttons below to scroll.`}
+        onScroll={update} onKeyDown={onKeyDown}
+        className="flex gap-4 px-4 md:px-8 overflow-x-auto pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" style={{ scrollSnapType: "x mandatory" }}>
+        {OWNER_PHOTOS.map(({ src, label, w }) => (
+          <li key={label} className="flex-shrink-0 rounded-2xl overflow-hidden relative" style={{ width: w, height: "260px", scrollSnapAlign: "start" }}>
+            <img src={src} alt={`Local Handyman ${label}`} className="w-full h-full object-cover object-top" />
+            <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 p-4" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
+              <div className="text-white font-bold text-sm uppercase tracking-wide">{label}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="flex justify-center gap-3 mt-4">
+        <button type="button" aria-controls="owner-photos" aria-label="Previous photos" aria-disabled={atStart} onClick={() => !atStart && scroll("prev")} className={buttonClass}>
+          <ArrowRight aria-hidden="true" className="w-5 h-5 rotate-180" />
+        </button>
+        <button type="button" aria-controls="owner-photos" aria-label="Next photos" aria-disabled={atEnd} onClick={() => !atEnd && scroll("next")} className={buttonClass}>
+          <ArrowRight aria-hidden="true" className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Array<{id: string; message: string}>>([]);
+  // Field errors keyed by input id; each is shown under its field and linked with aria-describedby.
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sendError, setSendError] = useState("");
   const [sending, setSending] = useState(false);
-  const errorRef = useRef<HTMLDivElement>(null);
   const successRef = useRef<HTMLDialogElement>(null);
-  useEffect(() => { if (errors.length) errorRef.current?.focus(); }, [errors]);
   useEffect(() => { if (submitted) successRef.current?.showModal(); }, [submitted]);
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", zip: "", capitalConfirm: false });
+
+  const onFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.target;
+    setForm(current => ({ ...current, [input.name]: input.type === "checkbox" ? input.checked : input.value }));
+    // Clear a field's error as soon as it is fixed; new errors only appear on submit.
+    if (errors[input.id] && !fieldError(input)) setErrors(({ [input.id]: _fixed, ...rest }) => rest);
+  };
 
   if (submitted) {
     return (
       <dialog ref={successRef} aria-labelledby="application-success-title" onCancel={() => setSubmitted(false)} className="fixed inset-0 z-[9999] m-auto p-4 bg-transparent backdrop:bg-black/60">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center relative animate-in fade-in zoom-in duration-300">
-          <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: LH_ORANGE }} />
+          <CheckCircle aria-hidden="true" className="w-16 h-16 mx-auto mb-4" style={{ color: LH_ORANGE }} />
           <h3 id="application-success-title" className="text-2xl font-black mb-2" style={{ fontFamily: "Montserrat, sans-serif", color: "#1C2B4A" }}>You're In. Here's What Happens Next.</h3>
           <div className="mt-6 text-left space-y-4">
             <div className="flex items-start gap-3">
@@ -171,10 +281,10 @@ function ApplicationForm() {
     <form noValidate aria-label="Franchise territory availability application" onSubmit={async (e) => {
         e.preventDefault();
         if (sending) return;
-        const labels: Record<string, string> = { firstName: "First name", lastName: "Last name", email: "Email address", phone: "Phone number", zip: "Zip / postal code", capitalConfirm: "Capital confirmation" };
-        const invalid = Array.from(e.currentTarget.querySelectorAll<HTMLInputElement>("input")).filter(input => !input.validity.valid).map(input => ({id: input.id, message: `${labels[input.name]}: ${input.validationMessage}`}));
-        setErrors(invalid);
-        if (invalid.length) return;
+        const invalid = Array.from(e.currentTarget.querySelectorAll<HTMLInputElement>("input")).filter(input => fieldError(input));
+        setErrors(Object.fromEntries(invalid.map(input => [input.id, fieldError(input)])));
+        setSendError("");
+        if (invalid.length) { invalid[0].focus(); return; }
         setSending(true);
         try {
           const response = await fetch("https://localhandyman.app.n8n.cloud/webhook/franchise-lead", {
@@ -189,7 +299,7 @@ function ApplicationForm() {
           });
           if (!response.ok) throw new Error("Submission failed");
         } catch {
-          setErrors([{id: "application-firstName", message: "Your application could not be sent. Please try again."}]);
+          setSendError("Your application could not be sent. Please try again.");
           setSending(false);
           return;
         }
@@ -213,53 +323,33 @@ function ApplicationForm() {
         }
         setSubmitted(true);
       }} className="space-y-3">
-      {errors.length > 0 && <div ref={errorRef} id="application-errors" tabIndex={-1} role="alert" className="rounded-lg border border-red-700 p-3 text-sm text-red-800">
-        <p>Please correct the following:</p>
-        <ul className="list-disc pl-5">{errors.map(error => <li key={error.id}><a href={`#${error.id}`} onClick={(event) => { event.preventDefault(); document.getElementById(error.id)?.focus(); }}>{error.message}</a></li>)}</ul>
-      </div>}
+      {/* Announced on submit; not focusable, so the Tab order goes straight to the fields. */}
+      <div role="alert" className="text-sm text-red-800">
+        {Object.keys(errors).length > 0 && <p className="rounded-lg border border-red-700 p-3">{Object.keys(errors).length === 1 ? "1 field needs attention." : `${Object.keys(errors).length} fields need attention.`} Each error is shown below its field.</p>}
+        {sendError && <p className="rounded-lg border border-red-700 p-3">{sendError}</p>}
+      </div>
+      <p className="text-xs text-gray-600" aria-hidden="true">* Required</p>
       <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label htmlFor="application-firstName" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>First Name *</label>
-          <input id="application-firstName" name="firstName" autoComplete="given-name" aria-invalid={errors.some(error => error.id === "application-firstName")} aria-describedby={errors.some(error => error.id === "application-firstName") ? "application-errors" : undefined} required value={form.firstName} onChange={e => setForm({...form, firstName: e.target.value})}
-            className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
-            placeholder="First name" />
+        <TextField id="application-firstName" name="firstName" label="First Name" autoComplete="given-name" placeholder="First name" value={form.firstName} error={errors["application-firstName"]} onChange={onFieldChange} />
+        <TextField id="application-lastName" name="lastName" label="Last Name" autoComplete="family-name" placeholder="Last name" value={form.lastName} error={errors["application-lastName"]} onChange={onFieldChange} />
+      </div>
+      <TextField id="application-email" name="email" type="email" label="Email Address" autoComplete="email" placeholder="your@email.com" value={form.email} error={errors["application-email"]} onChange={onFieldChange} />
+      <TextField id="application-phone" name="phone" type="tel" label="Phone Number" autoComplete="tel" placeholder="(555) 000-0000" value={form.phone} error={errors["application-phone"]} onChange={onFieldChange} />
+      <TextField id="application-zip" name="zip" label="Zip / Postal Code" autoComplete="postal-code" placeholder="Enter your zip or postal code" value={form.zip} error={errors["application-zip"]} onChange={onFieldChange} />
+      <div className="py-1">
+        <div className="flex items-start gap-2">
+          <input required type="checkbox" id="capitalConfirm" name="capitalConfirm" aria-invalid={Boolean(errors.capitalConfirm)} aria-describedby={errors.capitalConfirm ? "capitalConfirm-error" : undefined} checked={form.capitalConfirm} onChange={onFieldChange}
+            className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-orange-500" />
+          <label htmlFor="capitalConfirm" className="text-xs text-gray-600 leading-tight">
+            I confirm I have access to a minimum of <strong>$400,000 in liquid capital</strong> or equivalent financing capacity.
+          </label>
         </div>
-        <div>
-          <label htmlFor="application-lastName" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Last Name *</label>
-          <input id="application-lastName" name="lastName" autoComplete="family-name" aria-invalid={errors.some(error => error.id === "application-lastName")} aria-describedby={errors.some(error => error.id === "application-lastName") ? "application-errors" : undefined} required value={form.lastName} onChange={e => setForm({...form, lastName: e.target.value})}
-            className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
-            placeholder="Last name" />
-        </div>
-      </div>
-      <div>
-        <label htmlFor="application-email" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Email Address *</label>
-        <input id="application-email" name="email" autoComplete="email" aria-invalid={errors.some(error => error.id === "application-email")} aria-describedby={errors.some(error => error.id === "application-email") ? "application-errors" : undefined} required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
-          className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
-          placeholder="your@email.com" />
-      </div>
-      <div>
-        <label htmlFor="application-phone" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Phone Number *</label>
-        <input id="application-phone" name="phone" autoComplete="tel" aria-invalid={errors.some(error => error.id === "application-phone")} aria-describedby={errors.some(error => error.id === "application-phone") ? "application-errors" : undefined} required type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
-          className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
-          placeholder="(555) 000-0000" />
-      </div>
-      <div>
-        <label htmlFor="application-zip" className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: "#1C2B4A" }}>Zip / Postal Code *</label>
-        <input id="application-zip" name="zip" autoComplete="postal-code" aria-invalid={errors.some(error => error.id === "application-zip")} aria-describedby={errors.some(error => error.id === "application-zip") ? "application-errors" : undefined} required value={form.zip} onChange={e => setForm({...form, zip: e.target.value})}
-          className="w-full px-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:border-orange-400 focus:bg-white transition-all"
-          placeholder="Enter your zip or postal code" />
-      </div>
-      <div className="flex items-start gap-2 py-1">
-        <input required type="checkbox" id="capitalConfirm" name="capitalConfirm" aria-invalid={errors.some(error => error.id === "capitalConfirm")} aria-describedby={errors.some(error => error.id === "capitalConfirm") ? "application-errors" : undefined} checked={form.capitalConfirm} onChange={e => setForm({...form, capitalConfirm: e.target.checked})}
-          className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-orange-500" />
-        <label htmlFor="capitalConfirm" className="text-xs text-gray-600 leading-tight">
-          I confirm I have access to a minimum of <strong>$400,000 in liquid capital</strong> or equivalent financing capacity.
-        </label>
+        {errors.capitalConfirm && <p id="capitalConfirm-error" className="mt-1 text-xs font-semibold text-red-700">{errors.capitalConfirm}</p>}
       </div>
       <button type="submit" disabled={sending} aria-busy={sending}
         className="w-full py-4 rounded-xl font-black text-white text-base uppercase tracking-wider transition-all duration-150 active:scale-[0.98] hover:brightness-110"
         style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif", letterSpacing: "0.08em" }}>
-        {sending ? "SENDING…" : "CHECK AVAILABILITY →"}
+        {sending ? "SENDING…" : <>CHECK AVAILABILITY <span aria-hidden="true">→</span></>}
       </button>
       <p className="text-gray-400 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
     </form>
@@ -349,7 +439,7 @@ export default function FranchiseLander() {
               <div className="flex flex-wrap gap-4 mb-8">
                 {["$700B+ Market", "Protected Territory", "60-Day Launch", "No Trades Experience Required"].map(item => (
                   <div key={item} className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: LH_ORANGE }} />
+                    <CheckCircle aria-hidden="true" className="w-4 h-4 flex-shrink-0" style={{ color: LH_ORANGE }} />
                     <span className="text-white font-semibold text-sm" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>{item}</span>
                   </div>
                 ))}
@@ -360,7 +450,7 @@ export default function FranchiseLander() {
                   <div key={label} className="flex items-center gap-3">
                     {i > 0 && <div className="w-px h-8 bg-white/30 hidden sm:block" />}
                     <div>
-                      <div className="text-2xl font-black" style={{ color: i === 2 ? LH_ORANGE : "white", fontFamily: "Montserrat, sans-serif", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{val}</div>
+                      <div className="text-2xl font-black" style={{ color: i === 2 ? LH_ORANGE : "white", fontFamily: "Montserrat, sans-serif", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{val.replace("★", "")}{val.includes("★") && <><span aria-hidden="true">★</span><span className="sr-only"> stars</span></>}</div>
                       <div className="text-white/60 text-xs uppercase tracking-wide">{label}</div>
                     </div>
                   </div>
@@ -478,7 +568,9 @@ export default function FranchiseLander() {
 
               {/* SVG Chart */}
               <div className="relative w-full" style={{ height: "300px" }}>
-                <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="demand-chart-title" aria-describedby="demand-chart-desc">
+                  <title id="demand-chart-title">Line chart: homeowner demand vs. industry supply, 2018 to 2026</title>
+                  <desc id="demand-chart-desc">Demand rises from low in 2018 to peak in 2026, with a jump at COVID in 2020 (+150% bookings). Supply, measured by industry tech adoption, stays low and nearly flat. The widening gap between the lines is the opportunity. The data table that follows lists each year.</desc>
                   {/* Grid */}
                   <line x1="60" y1="40" x2="60" y2="260" stroke="#e5e7eb" strokeWidth="1" />
                   <line x1="60" y1="260" x2="760" y2="260" stroke="#e5e7eb" strokeWidth="1" />
@@ -516,6 +608,20 @@ export default function FranchiseLander() {
                   <text x="730" y="220" fontSize="11" fontWeight="bold" fill="#9ca3af">SUPPLY</text>
                 </svg>
               </div>
+              {/* Text alternative for the chart (AudioEye #44/#45). Levels are read from the chart's own axis. */}
+              <table className="sr-only">
+                <caption>Demand vs. supply by year (relative level, from the chart above)</caption>
+                <thead><tr><th scope="col">Year</th><th scope="col">Homeowner demand</th><th scope="col">Supply (industry tech adoption)</th></tr></thead>
+                <tbody>
+                  {[
+                    ["2018", "Low", "Low"],
+                    ["2020", "Medium (COVID: +150% bookings)", "Low"],
+                    ["2022", "High", "Low"],
+                    ["2024", "Between high and peak", "Low"],
+                    ["2026", "Peak", "Low"],
+                  ].map(([year, demand, supply]) => <tr key={year}><th scope="row">{year}</th><td>{demand}</td><td>{supply}</td></tr>)}
+                </tbody>
+              </table>
             </div>
 
             {/* Key stats row below chart */}
@@ -584,7 +690,7 @@ export default function FranchiseLander() {
             {whyItems.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${LH_ORANGE}20` }}>
-                  <Icon className="w-6 h-6" style={{ color: LH_ORANGE }} />
+                  <Icon aria-hidden="true" className="w-6 h-6" style={{ color: LH_ORANGE }} />
                 </div>
                 <h3 className="font-black text-base mb-2" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>{title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
@@ -679,15 +785,15 @@ export default function FranchiseLander() {
                 <div>
                   <div className="text-white font-bold">Nikki Zavradinos</div>
                   <div className="text-white/60 text-sm">St. Louis, MO — Franchisee</div>
-                  <div className="flex gap-0.5 mt-1">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-current" style={{ color: "#F5C518" }} />)}
+                  <div className="flex gap-0.5 mt-1" role="img" aria-label="5 out of 5 stars">
+                    {[...Array(5)].map((_, i) => <Star key={i} aria-hidden="true" className="w-3.5 h-3.5 fill-current" style={{ color: "#F5C518" }} />)}
                   </div>
                 </div>
               </div>
               <a href="#apply"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-black uppercase tracking-wide text-sm transition-all hover:brightness-110 active:scale-95"
                 style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
-                Start Your Story <ArrowRight className="w-4 h-4" />
+                Start Your Story <ArrowRight aria-hidden="true" className="w-4 h-4" />
               </a>
             </div>
             <div className="relative">
@@ -721,14 +827,14 @@ export default function FranchiseLander() {
               { label: "Lethbridge, AB", src: "https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/67fce03fc7a015f2f6d833a6.mp4#t=0.5" },
               { label: "Calgary, AB", src: "https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/67fcdcee56be24f746e4ad2b.mp4#t=0.5" },
             ].map(({ label, src }) => (
-              <div key={label} className="rounded-2xl overflow-hidden shadow-lg">
-              <video style={{ aspectRatio: "16/9" }} controls tabIndex={0} aria-label={`Local Handyman ${label} partner testimonial`} preload="metadata" className="w-full h-full object-cover">
-                    <source src={src} type="video/mp4" />
-                  </video>
-                <div className="p-4 bg-gray-50">
+              <figure key={label} className="rounded-2xl overflow-hidden shadow-lg">
+                <video style={{ aspectRatio: "16/9" }} controls tabIndex={0} title={`Video: Local Handyman ${label} partner testimonial`} aria-label={`Video: Local Handyman ${label} partner testimonial`} preload="metadata" className="w-full h-full object-cover">
+                  <source src={src} type="video/mp4" />
+                </video>
+                <figcaption className="p-4 bg-gray-50">
                   <p className="font-bold text-sm" style={{ color: LH_NAVY }}>Local Handyman {label}</p>
-                </div>
-              </div>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </div>
@@ -754,8 +860,8 @@ export default function FranchiseLander() {
                   <img src={img} alt={`Local Handyman ${location} team`} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-8">
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" style={{ color: "#F5C518" }} />)}
+                <div className="flex gap-0.5 mb-4" role="img" aria-label="5 out of 5 stars">
+                  {[...Array(5)].map((_, i) => <Star key={i} aria-hidden="true" className="w-4 h-4 fill-current" style={{ color: "#F5C518" }} />)}
                 </div>
                 <h3 className="font-black text-lg mb-3" style={{ color: LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>"{quote}"</h3>
                 <p className="text-gray-600 text-sm leading-relaxed mb-6">{body}</p>
@@ -845,7 +951,7 @@ export default function FranchiseLander() {
             <a href="#apply"
               className="flex-shrink-0 px-6 py-3 rounded-xl text-white font-black uppercase tracking-wide text-sm transition-all hover:brightness-110 whitespace-nowrap"
               style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
-              Get the Numbers →
+              Get the Numbers <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
@@ -859,23 +965,7 @@ export default function FranchiseLander() {
           <h2 className="text-3xl font-black uppercase text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>Smart Investors Already In. More Territories Closing.</h2>
           <p className="text-gray-300 mt-3 max-w-xl mx-auto">From Raleigh to Calgary, franchisees are building the Local Handyman brand in their communities.</p>
         </div>
-        {/* Wide cinematic owner photos — different sizes for visual rhythm */}
-        <div className="flex gap-4 px-4 md:px-8 overflow-x-auto pb-2" style={{ scrollSnapType: "x mandatory" }}>
-          {[
-            { src: "/images/IMG_8179_100c1d9f.jpeg", label: "Fraser Valley, BC", w: "280px" },
-            { src: "/images/IMG_8175_16a0d172.jpeg", label: "Raleigh, NC", w: "280px" },
-            { src: "/images/1747_0d4047bf.JPG", label: "St. Louis, MO", w: "320px" },
-            { src: PHOTO_CAULKING, label: "Oklahoma City, OK", w: "280px" },
-            { src: PHOTO_BASEBOARD, label: "Pittsburgh, PA", w: "280px" },
-          ].map(({ src, label, w }) => (
-            <div key={label} className="flex-shrink-0 rounded-2xl overflow-hidden relative" style={{ width: w, height: "260px", scrollSnapAlign: "start" }}>
-              <img src={src} alt={label} className="w-full h-full object-cover object-top" />
-              <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
-                <div className="text-white font-bold text-sm uppercase tracking-wide">{label}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <OwnerPhotoStrip />
       </section>
 
       {/* ── COLIN SPRAKE — MEET YOUR MENTOR ── */}
@@ -890,9 +980,12 @@ export default function FranchiseLander() {
           </div>
           </Reveal>
           {/* Video */}
-          <video controls tabIndex={0} aria-label="Your Unfair Advantage — Colin Sprake and the Local Handyman system" className="w-full rounded-3xl shadow-2xl mb-10" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
+          <figure className="mb-10">
+            <video controls tabIndex={0} title="Video: Your Unfair Advantage, Colin Sprake on the Local Handyman system" aria-label="Video: Your Unfair Advantage, Colin Sprake on the Local Handyman system" className="w-full rounded-3xl shadow-2xl" poster="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/675ff435fb63bc30765fb086.png" style={{ aspectRatio: "16/9" }}>
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
+            <figcaption className="sr-only">Your Unfair Advantage: Colin Sprake, CEO and co-owner, on the Local Handyman system</figcaption>
+          </figure>
           {/* Body copy */}
           <div className="max-w-3xl mx-auto">
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
@@ -931,7 +1024,7 @@ export default function FranchiseLander() {
           <a href="#apply"
             className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-white font-black uppercase tracking-wider text-lg transition-all hover:brightness-110 active:scale-95 shadow-2xl"
             style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
-            See If My Territory Is Available <ArrowRight className="w-5 h-5" />
+            See If My Territory Is Available <ArrowRight aria-hidden="true" className="w-5 h-5" />
           </a>
           <p className="text-white/40 text-sm mt-4">No obligation. No broker fees. 100% confidential.</p>
         </div>
@@ -956,7 +1049,7 @@ export default function FranchiseLander() {
           {/* Star rating display */}
           <div className="flex justify-center items-center gap-2 mb-10">
             {[1,2,3,4,5].map(i => (
-              <svg key={i} className="w-8 h-8 text-yellow-400 fill-current" viewBox="0 0 20 20">
+              <svg key={i} aria-hidden="true" focusable="false" className="w-8 h-8 text-yellow-400 fill-current" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
             ))}
@@ -975,9 +1068,9 @@ export default function FranchiseLander() {
               { name: "Sean B.", location: "Pittsburgh, PA", text: "Extremely happy with our service. From the easy and responsive scheduling process to the quality of the work, highly recommend. Michael was friendly, came on time, and left the space spotless after.", rating: 5 },
             ].map((review, i) => (
               <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div className="flex gap-1 mb-3">
+                <div className="flex gap-1 mb-3" role="img" aria-label={`${review.rating} out of 5 stars`}>
                   {[1,2,3,4,5].map(s => (
-                    <svg key={s} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                    <svg key={s} aria-hidden="true" focusable="false" className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                   ))}
@@ -997,7 +1090,7 @@ export default function FranchiseLander() {
           </div>
 
           <div className="text-center mt-10">
-            <p className="text-sm text-gray-500">Verified reviews from Google Business Profiles across all 35 Local Handyman locations · <a href="https://localhandymanreviews.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-orange-600" style={{ color: LH_ORANGE }}>See all 1,695 reviews →</a></p>
+            <p className="text-sm text-gray-500">Verified reviews from Google Business Profiles across all 35 Local Handyman locations · <a href="https://localhandymanreviews.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-orange-600" style={{ color: LH_ORANGE }}>See all 1,695 reviews <span aria-hidden="true">→</span></a></p>
           </div>
         </div>
       </section>
@@ -1024,8 +1117,8 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <img src={LOGO_URL} alt="Local Handyman" className="h-8 w-auto" />
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-500">
-            <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone className="w-3.5 h-3.5" />778-770-4494</a>
-            <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
+            <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone aria-hidden="true" className="w-3.5 h-3.5" />778-770-4494</a>
+            <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail aria-hidden="true" className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
           </div>
           <p className="text-xs text-gray-400">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
         </div>
