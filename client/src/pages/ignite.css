@@ -113,3 +113,4 @@
 .ig-credibility{display:grid;grid-template-columns:550fr 530fr 500fr 420fr;align-items:center;gap:8px;margin-top:40px;padding:24px;background:#fff;border-radius:8px}
 .ig-credibility svg{display:block;width:100%;height:auto;overflow:hidden}
 @media(max-width:640px){.ig-credibility{grid-template-columns:1fr 1fr;gap:24px 12px;padding:20px 12px}.ig-credibility svg{width:100%;height:100%;max-height:120px}.ig-colin-credentials{font-size:15px}}
+.ig-partner-media{position:relative}.ig-partner-logo{position:absolute;top:12px;left:12px;z-index:2;width:88px;height:auto;padding:4px 6px;background:#ffffffe6;border-radius:6px;pointer-events:none}
