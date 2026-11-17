@@ -34,7 +34,8 @@ function Reveal({ children, delay = 0, className = "" }: { children: any; delay?
   );
 }
 
-const LH_ORANGE = "#D63E15";
+const LH_ORANGE = "#D03A12";
+const LH_ORANGE_ON_DARK = "#FF6A3D"; // orange text on navy or black: 4.9:1 on navy
 const HANDYMAN_1987_IMG = "/images/lh-1987-bg-clean_9dba94aa.jpg";
 const LH_NAVY = "#1C2B4A";
 const LOGO_URL = "/images/handymanlogo_d9f89eaa.png";
@@ -392,7 +393,7 @@ function ApplicationForm() {
         style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif", letterSpacing: "0.08em" }}>
         {sending ? "SENDING…" : <>CHECK AVAILABILITY <span aria-hidden="true">→</span></>}
       </button>
-      <p className="text-gray-400 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
+      <p className="text-gray-500 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
     </form>
   );
 }
@@ -638,14 +639,14 @@ export default function FranchiseLander() {
                   <circle cx="720" cy="38" r="6" fill="#F04E23" />
                   {/* Gap annotation */}
                   <line x1="640" y1="52" x2="640" y2="217" stroke="#F04E23" strokeWidth="1.5" strokeDasharray="4" />
-                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#D63E15">THE GAP</text>
+                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#D03A12">THE GAP</text>
                   <text x="655" y="148" fontSize="10" fill="#6b7280">= Your Opportunity</text>
                   {/* COVID marker */}
                   <line x1="240" y1="45" x2="240" y2="260" stroke="#F04E23" strokeWidth="1" strokeDasharray="2" opacity="0.4" />
-                  <text x="248" y="55" fontSize="9" fill="#D63E15" opacity="0.8">COVID</text>
-                  <text x="248" y="67" fontSize="9" fill="#D63E15" opacity="0.6">+150% bookings</text>
+                  <text x="248" y="55" fontSize="9" fill="#D03A12" opacity="0.8">COVID</text>
+                  <text x="248" y="67" fontSize="9" fill="#D03A12" opacity="0.6">+150% bookings</text>
                   {/* Line labels */}
-                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#D63E15">DEMAND</text>
+                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#D03A12">DEMAND</text>
                   <text x="730" y="220" fontSize="11" fontWeight="bold" fill="#9ca3af">SUPPLY</text>
                 </svg>
               </div>
@@ -782,7 +783,7 @@ export default function FranchiseLander() {
       <section id="how-it-works" className="py-20" style={{ backgroundColor: LH_NAVY }}>
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Process</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE_ON_DARK }}>The Process</p>
             <h2 className="text-3xl md:text-4xl font-black uppercase mb-4 text-white" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">From Decision to Revenue in 60 Days</span><span aria-hidden="true">
               From Decision to Revenue<br />in 60 Days
             </span></h2>
@@ -812,7 +813,7 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>Franchisee Story</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE_ON_DARK }}>Franchisee Story</p>
               <h2 className="text-3xl md:text-4xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">"I Had a Waiting List on My Launch Week. The Demand Is Real."</span><span aria-hidden="true">
                 "I Had a Waiting List<br />on My Launch Week.<br />
                 <span style={{ color: LH_ORANGE }}>The Demand Is Real."</span>
@@ -1003,7 +1004,7 @@ export default function FranchiseLander() {
       {/* ── OWNERS STRIP ── */}
       <section className="py-16 overflow-hidden" style={{ background: LH_NAVY }}>
         <div className="max-w-6xl mx-auto px-4 mb-10 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE }}>Growing Network</p>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE_ON_DARK }}>Growing Network</p>
           <h2 className="text-3xl font-black uppercase text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>Smart Investors Already In. More Territories Closing.</h2>
           <p className="text-gray-300 mt-3 max-w-xl mx-auto">From Raleigh to Calgary, franchisees are building the Local Handyman brand in their communities.</p>
         </div>
@@ -1057,7 +1058,7 @@ export default function FranchiseLander() {
       {/* ── FINAL CTA ── */}
       <section className="py-20" style={{ backgroundColor: LH_NAVY }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: LH_ORANGE }}>Limited Territories Available</p>
+          <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: LH_ORANGE_ON_DARK }}>Limited Territories Available</p>
           <h2 className="text-3xl md:text-5xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Territories Are Closing. Is Yours Still Available?</span><span aria-hidden="true">
             Territories Are Closing.<br />Is Yours Still Available?
           </span></h2>
