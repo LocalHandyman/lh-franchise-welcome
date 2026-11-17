@@ -34,10 +34,51 @@ function Reveal({ children, delay = 0, className = "" }: { children: any; delay?
   );
 }
 
-const LH_ORANGE = "#F04E23";
+const LH_ORANGE = "#D63E15";
 const HANDYMAN_1987_IMG = "/images/lh-1987-bg-clean_9dba94aa.jpg";
 const LH_NAVY = "#1C2B4A";
 const LOGO_URL = "/images/handymanlogo_d9f89eaa.png";
+
+// Text alternative for each video (WCAG 1.2.3/1.2.5). The videos carry burned-in captions;
+// the transcript adds who is on screen and where, which the audio alone doesn't say.
+const VIDEO_TRANSCRIPTS: Record<string, string[]> = {
+  "Unfair Advantage": [
+    "Colin Sprake, in a Local Handyman polo, speaks to the camera outside a house.",
+    "My name's Colin Sprake, I'm the CEO of Local Handyman. You're on this page because you're obviously interested in a business or a business opportunity. Really awesome. Well, on this page is everything you need to know about becoming a franchisee. We're a brand that really goes above and beyond to make you feel super special and part of a family.",
+    "Most importantly, read everything you need down below, get in touch with us. You can book a call with one of our team members. There's no obligation to the call. It's just about finding out more information, learning more about who we are, and then you can make a decision from there. Make sure you get it done right now.",
+  ],
+  "Regina, SK": [
+    "The Regina partner speaks to the camera outside Colin's house after the partner event.",
+    "We've just finished up our two-day event with Colin at his lovely house. It's the most inspiring event I've ever been to. Truly pumped, and to feel that after all this, we're gonna succeed one million percent.",
+  ],
+  "Kelowna, BC": [
+    "Sydney and Ken, the Kelowna partners, speak to the camera outside Colin's house at the convention.",
+    "We are Sydney and Ken from the Kelowna, BC territory. This was our first convention and it was fantastic. Definitely 10 out of 10, recommend. It was insane. Energy was insane. Coming back every year, forever, forever. That's it. No questions asked. We're here for the long haul. Long haul, we're not going anywhere. We're on it, 100%.",
+    "Colin is amazing. Nate's amazing. Everybody, the team is just, you get support. Like, you know, they say you're in business for yourself, but not by yourself. And that's the beauty part. We have a plan. This is going to go to the next level. And all's I'm saying is they're gonna be a force to be reckoned with. Yeah. Do it. See you next year. Oh yeah, next year for sure.",
+  ],
+  "Lethbridge, AB": [
+    "Mark and Nicole, the Lethbridge partners, speak to the camera outside at the convention.",
+    "I'm Mark, this is my wife, Nicole. We're from Lethbridge, Alberta. Colin, Nathan and the other partners here invited us to come out for a national convention. There's a lot of components that resonate with me. A lot of things stick in my mind. I've made multiple files, multiple notes within my little reMarkable. The wealth of information and support that we have from the franchise, both Colin and Nathan, it's very encouraging. I love it, honestly.",
+    "It's empowering, and it makes me think that, you know what, I can actually achieve certainly more than what I've created as a limit within my own mind. And I love that. I truly do. My success is their success. And they encourage you to push more, grow more, achieve more, be better, love yourselves, love one another. It's awesome. Everything is beautiful. The sun shines. Thank you.",
+  ],
+  "Calgary, AB": [
+    "Marcia and Courtney, the Calgary partners, speak to the camera outside Colin's house at the convention.",
+    "Marcia: Hi, I'm Marcia. This is my husband, Courtney. So we were so excited to come to the convention because we felt like it was a reset for our team, and it was a way to meet all the people in our team that actually have the same mindset as us. Colin has shown us that mindset is important, and that it's important to set your priorities and to really dig in, because there's really so much to learn and so many things to share, and we're a team. Collaboration is so important. So I was really excited to be here. What about you?",
+    "Courtney: For me, it was amazing. We decided to take the drive down from Airdrie, Calgary. It was about nine, 10 hours, but it was well worth it. One of my biggest things is mindset. I have to change our mindset. We've been in handyman for seven years, and actually this is the first time that we've ever gotten together as a group. I'm so excited to be working with Colin and Nathan. They are just inspiring. Colin has just opened up my mind to think differently. He's opened up my mind to what we can achieve. We have such a great opportunity. We have a very big territory, and we're just excited to get back and start implementing what we learned this weekend.",
+    "Marcia: It's been an awesome time. I am so happy. I'm so grateful to Colin, so grateful to Nathan and all the rest of the Local Handyman team. Thank you all, and we hope to do this again soon.",
+  ],
+};
+
+function VideoTranscript({ name }: { name: string }) {
+  return (
+    <details className="mt-2 text-sm text-gray-700">
+      <summary className="cursor-pointer font-semibold">Read the transcript</summary>
+      <div className="mt-2 space-y-2 leading-relaxed">
+        {VIDEO_TRANSCRIPTS[name].map((line, i) => <p key={i} className={i === 0 ? "italic text-gray-600" : undefined}>{line}</p>)}
+      </div>
+    </details>
+  );
+}
 const HERO_IMG = "/images/lh-franchise-hero-v2_6c1b7f20.jpg";
 const OWNER_IMG = "/images/lh-franchise-owner-v2_ff931b44.jpg";
 const NIKKI_IMG = "/images/nikki-zavradinos.jpg";
@@ -597,14 +638,14 @@ export default function FranchiseLander() {
                   <circle cx="720" cy="38" r="6" fill="#F04E23" />
                   {/* Gap annotation */}
                   <line x1="640" y1="52" x2="640" y2="217" stroke="#F04E23" strokeWidth="1.5" strokeDasharray="4" />
-                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#F04E23">THE GAP</text>
+                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#D63E15">THE GAP</text>
                   <text x="655" y="148" fontSize="10" fill="#6b7280">= Your Opportunity</text>
                   {/* COVID marker */}
                   <line x1="240" y1="45" x2="240" y2="260" stroke="#F04E23" strokeWidth="1" strokeDasharray="2" opacity="0.4" />
-                  <text x="248" y="55" fontSize="9" fill="#F04E23" opacity="0.8">COVID</text>
-                  <text x="248" y="67" fontSize="9" fill="#F04E23" opacity="0.6">+150% bookings</text>
+                  <text x="248" y="55" fontSize="9" fill="#D63E15" opacity="0.8">COVID</text>
+                  <text x="248" y="67" fontSize="9" fill="#D63E15" opacity="0.6">+150% bookings</text>
                   {/* Line labels */}
-                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#F04E23">DEMAND</text>
+                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#D63E15">DEMAND</text>
                   <text x="730" y="220" fontSize="11" fontWeight="bold" fill="#9ca3af">SUPPLY</text>
                 </svg>
               </div>
@@ -833,6 +874,7 @@ export default function FranchiseLander() {
                 </video>
                 <figcaption className="p-4 bg-gray-50">
                   <p className="font-bold text-sm" style={{ color: LH_NAVY }}>Local Handyman {label}</p>
+                  <VideoTranscript name={label} />
                 </figcaption>
               </figure>
             ))}
@@ -985,6 +1027,7 @@ export default function FranchiseLander() {
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
             <figcaption className="sr-only">Your Unfair Advantage: Colin Sprake, CEO and co-owner, on the Local Handyman system</figcaption>
+            <VideoTranscript name="Unfair Advantage" />
           </figure>
           {/* Body copy */}
           <div className="max-w-3xl mx-auto">
