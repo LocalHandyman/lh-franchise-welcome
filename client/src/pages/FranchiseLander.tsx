@@ -313,7 +313,7 @@ function ApplicationForm() {
           <button onClick={() => setSubmitted(false)} className="mt-6 w-full py-3 rounded-lg text-white font-bold text-sm transition-all hover:opacity-90" style={{ backgroundColor: LH_ORANGE }}>
             Back to Page
           </button>
-          <p className="mt-3 text-xs text-gray-400">Check your email for a confirmation.</p>
+          <p className="mt-3 text-xs text-gray-500">Check your email for a confirmation.</p>
         </div>
       </dialog>
     );
@@ -605,7 +605,7 @@ export default function FranchiseLander() {
                     <span className="text-xs font-bold text-gray-600">Industry Tech Adoption</span>
                   </div>
                 </div>
-                <span className="text-xs text-gray-400">Sources: ABC, McKinsey, Angi, BLS</span>
+                <span className="text-xs text-gray-500">Sources: ABC, McKinsey, Angi, BLS</span>
               </div>
 
               {/* SVG Chart */}
@@ -678,7 +678,7 @@ export default function FranchiseLander() {
                 <div key={item.label} className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-100">
                   <div className="text-2xl md:text-3xl font-black mb-1" style={{ color: item.color, fontFamily: "Montserrat, sans-serif" }}>{item.stat}</div>
                   <div className="text-xs text-gray-600 leading-tight font-medium">{item.label}</div>
-                  <div className="text-[10px] text-gray-400 mt-1">Source: {item.source}</div>
+                  <div className="text-[10px] text-gray-500 mt-1">Source: {item.source}</div>
                 </div>
               ))}
             </div>
@@ -842,7 +842,7 @@ export default function FranchiseLander() {
               <img src={NIKKI_IMG} alt="Nikki Zavradinos — Local Handyman Franchisee" className="rounded-2xl w-full object-cover shadow-2xl" style={{ maxHeight: "480px" }} />
               <div className="absolute -bottom-4 -left-4 rounded-xl p-4 shadow-xl" style={{ backgroundColor: LH_ORANGE }}>
                 <div className="text-white font-black text-xl leading-tight" style={{ fontFamily: "Montserrat, sans-serif" }}>Booked<br />Week 1</div>
-                <div className="text-white/80 text-xs uppercase tracking-wide mt-1">Launch Week</div>
+                <div className="text-white text-xs uppercase tracking-wide mt-1">Launch Week</div>
               </div>
             </div>
           </div>
@@ -980,7 +980,7 @@ export default function FranchiseLander() {
             ].map(item => (
               <div key={item.label} className={`rounded-2xl p-8 text-center ${item.highlight ? "shadow-xl" : ""}`}
                 style={{ backgroundColor: item.highlight ? LH_NAVY : "#F8F9FA", border: item.highlight ? `2px solid ${LH_ORANGE}` : "none" }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: item.highlight ? LH_ORANGE : "#9B9B9B" }}>{item.label}</div>
+                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: item.highlight ? LH_ORANGE_ON_DARK : "#6B7280" }}>{item.label}</div>
                 <div className="text-4xl font-black mb-3" style={{ color: item.highlight ? "white" : LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>{item.amount}</div>
                 <p className="text-sm leading-relaxed" style={{ color: item.highlight ? "rgba(255,255,255,0.7)" : "#6B7280" }}>{item.desc}</p>
               </div>
@@ -1070,7 +1070,7 @@ export default function FranchiseLander() {
             style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
             See If My Territory Is Available <ArrowRight aria-hidden="true" className="w-5 h-5" />
           </a>
-          <p className="text-white/40 text-sm mt-4">No obligation. No broker fees. 100% confidential.</p>
+          <p className="text-white/80 text-sm mt-4">No obligation. No broker fees. 100% confidential.</p>
         </div>
       </section>
 
@@ -1164,13 +1164,13 @@ export default function FranchiseLander() {
             <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone aria-hidden="true" className="w-3.5 h-3.5" />778-770-4494</a>
             <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail aria-hidden="true" className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
           </div>
-          <p className="text-xs text-gray-400">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
+          <p className="text-xs text-gray-500">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
         </div>
 
       {/* ── SOURCES / FOOTNOTES ── */}
       <section className="py-12 bg-gray-50 border-t border-gray-100">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Sources & Citations</h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-500">Sources & Citations</h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-3 text-xs text-gray-500 leading-relaxed">
             <div>
               <h3 className="font-semibold text-gray-600 mb-2">Market Size & Growth</h3><ul role="list">
