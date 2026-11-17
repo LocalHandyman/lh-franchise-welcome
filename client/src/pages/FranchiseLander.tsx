@@ -816,7 +816,7 @@ export default function FranchiseLander() {
               <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE_ON_DARK }}>Franchisee Story</p>
               <h2 className="text-3xl md:text-4xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">"I Had a Waiting List on My Launch Week. The Demand Is Real."</span><span aria-hidden="true">
                 "I Had a Waiting List<br />on My Launch Week.<br />
-                <span style={{ color: LH_ORANGE }}>The Demand Is Real."</span>
+                <span style={{ color: LH_ORANGE_ON_DARK }}>The Demand Is Real."</span>
               </span></h2>
               <p className="text-white/75 text-lg leading-relaxed mb-8">
                 "I had no trades experience at all — I came from a corporate technology and operations background. My whole tech team was booked the first week we opened. I had a waiting list on launch week. The demand in this market is real, and Local Handyman gave me the brand and systems to capture it."
