@@ -34,10 +34,52 @@ function Reveal({ children, delay = 0, className = "" }: { children: any; delay?
   );
 }
 
-const LH_ORANGE = "#F04E23";
+const LH_ORANGE = "#D03A12";
+const LH_ORANGE_ON_DARK = "#FF6A3D"; // orange text on navy or black: 4.9:1 on navy
 const HANDYMAN_1987_IMG = "/images/lh-1987-bg-clean_9dba94aa.jpg";
 const LH_NAVY = "#1C2B4A";
 const LOGO_URL = "/images/handymanlogo_d9f89eaa.png";
+
+// Text alternative for each video (WCAG 1.2.3/1.2.5). The videos carry burned-in captions;
+// the transcript adds who is on screen and where, which the audio alone doesn't say.
+const VIDEO_TRANSCRIPTS: Record<string, string[]> = {
+  "Unfair Advantage": [
+    "Colin Sprake, in a Local Handyman polo, speaks to the camera outside a house.",
+    "My name's Colin Sprake, I'm the CEO of Local Handyman. You're on this page because you're obviously interested in a business or a business opportunity. Really awesome. Well, on this page is everything you need to know about becoming a franchisee. We're a brand that really goes above and beyond to make you feel super special and part of a family.",
+    "Most importantly, read everything you need down below, get in touch with us. You can book a call with one of our team members. There's no obligation to the call. It's just about finding out more information, learning more about who we are, and then you can make a decision from there. Make sure you get it done right now.",
+  ],
+  "Regina, SK": [
+    "The Regina partner speaks to the camera outside Colin's house after the partner event.",
+    "We've just finished up our two-day event with Colin at his lovely house. It's the most inspiring event I've ever been to. Truly pumped, and to feel that after all this, we're gonna succeed one million percent.",
+  ],
+  "Kelowna, BC": [
+    "Sydney and Ken, the Kelowna partners, speak to the camera outside Colin's house at the convention.",
+    "We are Sydney and Ken from the Kelowna, BC territory. This was our first convention and it was fantastic. Definitely 10 out of 10, recommend. It was insane. Energy was insane. Coming back every year, forever, forever. That's it. No questions asked. We're here for the long haul. Long haul, we're not going anywhere. We're on it, 100%.",
+    "Colin is amazing. Nate's amazing. Everybody, the team is just, you get support. Like, you know, they say you're in business for yourself, but not by yourself. And that's the beauty part. We have a plan. This is going to go to the next level. And all's I'm saying is they're gonna be a force to be reckoned with. Yeah. Do it. See you next year. Oh yeah, next year for sure.",
+  ],
+  "Lethbridge, AB": [
+    "Mark and Nicole, the Lethbridge partners, speak to the camera outside at the convention.",
+    "I'm Mark, this is my wife, Nicole. We're from Lethbridge, Alberta. Colin, Nathan and the other partners here invited us to come out for a national convention. There's a lot of components that resonate with me. A lot of things stick in my mind. I've made multiple files, multiple notes within my little reMarkable. The wealth of information and support that we have from the franchise, both Colin and Nathan, it's very encouraging. I love it, honestly.",
+    "It's empowering, and it makes me think that, you know what, I can actually achieve certainly more than what I've created as a limit within my own mind. And I love that. I truly do. My success is their success. And they encourage you to push more, grow more, achieve more, be better, love yourselves, love one another. It's awesome. Everything is beautiful. The sun shines. Thank you.",
+  ],
+  "Calgary, AB": [
+    "Marcia and Courtney, the Calgary partners, speak to the camera outside Colin's house at the convention.",
+    "Marcia: Hi, I'm Marcia. This is my husband, Courtney. So we were so excited to come to the convention because we felt like it was a reset for our team, and it was a way to meet all the people in our team that actually have the same mindset as us. Colin has shown us that mindset is important, and that it's important to set your priorities and to really dig in, because there's really so much to learn and so many things to share, and we're a team. Collaboration is so important. So I was really excited to be here. What about you?",
+    "Courtney: For me, it was amazing. We decided to take the drive down from Airdrie, Calgary. It was about nine, 10 hours, but it was well worth it. One of my biggest things is mindset. I have to change our mindset. We've been in handyman for seven years, and actually this is the first time that we've ever gotten together as a group. I'm so excited to be working with Colin and Nathan. They are just inspiring. Colin has just opened up my mind to think differently. He's opened up my mind to what we can achieve. We have such a great opportunity. We have a very big territory, and we're just excited to get back and start implementing what we learned this weekend.",
+    "Marcia: It's been an awesome time. I am so happy. I'm so grateful to Colin, so grateful to Nathan and all the rest of the Local Handyman team. Thank you all, and we hope to do this again soon.",
+  ],
+};
+
+function VideoTranscript({ name }: { name: string }) {
+  return (
+    <details className="mt-2 text-sm text-gray-700">
+      <summary className="cursor-pointer font-semibold">Read the transcript</summary>
+      <div className="mt-2 space-y-2 leading-relaxed">
+        {VIDEO_TRANSCRIPTS[name].map((line, i) => <p key={i} className={i === 0 ? "italic text-gray-600" : undefined}>{line}</p>)}
+      </div>
+    </details>
+  );
+}
 const HERO_IMG = "/images/lh-franchise-hero-v2_6c1b7f20.jpg";
 const OWNER_IMG = "/images/lh-franchise-owner-v2_ff931b44.jpg";
 const NIKKI_IMG = "/images/nikki-zavradinos.jpg";
@@ -271,7 +313,7 @@ function ApplicationForm() {
           <button onClick={() => setSubmitted(false)} className="mt-6 w-full py-3 rounded-lg text-white font-bold text-sm transition-all hover:opacity-90" style={{ backgroundColor: LH_ORANGE }}>
             Back to Page
           </button>
-          <p className="mt-3 text-xs text-gray-400">Check your email for a confirmation.</p>
+          <p className="mt-3 text-xs text-gray-500">Check your email for a confirmation.</p>
         </div>
       </dialog>
     );
@@ -351,7 +393,7 @@ function ApplicationForm() {
         style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif", letterSpacing: "0.08em" }}>
         {sending ? "SENDING…" : <>CHECK AVAILABILITY <span aria-hidden="true">→</span></>}
       </button>
-      <p className="text-gray-400 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
+      <p className="text-gray-500 text-xs text-center">No obligation. No broker fees. 100% confidential.</p>
     </form>
   );
 }
@@ -563,7 +605,7 @@ export default function FranchiseLander() {
                     <span className="text-xs font-bold text-gray-600">Industry Tech Adoption</span>
                   </div>
                 </div>
-                <span className="text-xs text-gray-400">Sources: ABC, McKinsey, Angi, BLS</span>
+                <span className="text-xs text-gray-500">Sources: ABC, McKinsey, Angi, BLS</span>
               </div>
 
               {/* SVG Chart */}
@@ -597,14 +639,14 @@ export default function FranchiseLander() {
                   <circle cx="720" cy="38" r="6" fill="#F04E23" />
                   {/* Gap annotation */}
                   <line x1="640" y1="52" x2="640" y2="217" stroke="#F04E23" strokeWidth="1.5" strokeDasharray="4" />
-                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#F04E23">THE GAP</text>
+                  <text x="655" y="130" fontSize="13" fontWeight="bold" fill="#D03A12">THE GAP</text>
                   <text x="655" y="148" fontSize="10" fill="#6b7280">= Your Opportunity</text>
                   {/* COVID marker */}
                   <line x1="240" y1="45" x2="240" y2="260" stroke="#F04E23" strokeWidth="1" strokeDasharray="2" opacity="0.4" />
-                  <text x="248" y="55" fontSize="9" fill="#F04E23" opacity="0.8">COVID</text>
-                  <text x="248" y="67" fontSize="9" fill="#F04E23" opacity="0.6">+150% bookings</text>
+                  <text x="248" y="55" fontSize="9" fill="#D03A12" opacity="0.8">COVID</text>
+                  <text x="248" y="67" fontSize="9" fill="#D03A12" opacity="0.6">+150% bookings</text>
                   {/* Line labels */}
-                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#F04E23">DEMAND</text>
+                  <text x="730" y="35" fontSize="11" fontWeight="bold" fill="#D03A12">DEMAND</text>
                   <text x="730" y="220" fontSize="11" fontWeight="bold" fill="#9ca3af">SUPPLY</text>
                 </svg>
               </div>
@@ -636,7 +678,7 @@ export default function FranchiseLander() {
                 <div key={item.label} className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-100">
                   <div className="text-2xl md:text-3xl font-black mb-1" style={{ color: item.color, fontFamily: "Montserrat, sans-serif" }}>{item.stat}</div>
                   <div className="text-xs text-gray-600 leading-tight font-medium">{item.label}</div>
-                  <div className="text-[10px] text-gray-400 mt-1">Source: {item.source}</div>
+                  <div className="text-[10px] text-gray-500 mt-1">Source: {item.source}</div>
                 </div>
               ))}
             </div>
@@ -741,7 +783,7 @@ export default function FranchiseLander() {
       <section id="how-it-works" className="py-20" style={{ backgroundColor: LH_NAVY }}>
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>The Process</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE_ON_DARK }}>The Process</p>
             <h2 className="text-3xl md:text-4xl font-black uppercase mb-4 text-white" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">From Decision to Revenue in 60 Days</span><span aria-hidden="true">
               From Decision to Revenue<br />in 60 Days
             </span></h2>
@@ -771,10 +813,10 @@ export default function FranchiseLander() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE }}>Franchisee Story</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: LH_ORANGE_ON_DARK }}>Franchisee Story</p>
               <h2 className="text-3xl md:text-4xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">"I Had a Waiting List on My Launch Week. The Demand Is Real."</span><span aria-hidden="true">
                 "I Had a Waiting List<br />on My Launch Week.<br />
-                <span style={{ color: LH_ORANGE }}>The Demand Is Real."</span>
+                <span style={{ color: LH_ORANGE_ON_DARK }}>The Demand Is Real."</span>
               </span></h2>
               <p className="text-white/75 text-lg leading-relaxed mb-8">
                 "I had no trades experience at all — I came from a corporate technology and operations background. My whole tech team was booked the first week we opened. I had a waiting list on launch week. The demand in this market is real, and Local Handyman gave me the brand and systems to capture it."
@@ -800,7 +842,7 @@ export default function FranchiseLander() {
               <img src={NIKKI_IMG} alt="Nikki Zavradinos — Local Handyman Franchisee" className="rounded-2xl w-full object-cover shadow-2xl" style={{ maxHeight: "480px" }} />
               <div className="absolute -bottom-4 -left-4 rounded-xl p-4 shadow-xl" style={{ backgroundColor: LH_ORANGE }}>
                 <div className="text-white font-black text-xl leading-tight" style={{ fontFamily: "Montserrat, sans-serif" }}>Booked<br />Week 1</div>
-                <div className="text-white/80 text-xs uppercase tracking-wide mt-1">Launch Week</div>
+                <div className="text-white text-xs uppercase tracking-wide mt-1">Launch Week</div>
               </div>
             </div>
           </div>
@@ -833,6 +875,7 @@ export default function FranchiseLander() {
                 </video>
                 <figcaption className="p-4 bg-gray-50">
                   <p className="font-bold text-sm" style={{ color: LH_NAVY }}>Local Handyman {label}</p>
+                  <VideoTranscript name={label} />
                 </figcaption>
               </figure>
             ))}
@@ -937,7 +980,7 @@ export default function FranchiseLander() {
             ].map(item => (
               <div key={item.label} className={`rounded-2xl p-8 text-center ${item.highlight ? "shadow-xl" : ""}`}
                 style={{ backgroundColor: item.highlight ? LH_NAVY : "#F8F9FA", border: item.highlight ? `2px solid ${LH_ORANGE}` : "none" }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: item.highlight ? LH_ORANGE : "#9B9B9B" }}>{item.label}</div>
+                <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: item.highlight ? LH_ORANGE_ON_DARK : "#6B7280" }}>{item.label}</div>
                 <div className="text-4xl font-black mb-3" style={{ color: item.highlight ? "white" : LH_NAVY, fontFamily: "Montserrat, sans-serif" }}>{item.amount}</div>
                 <p className="text-sm leading-relaxed" style={{ color: item.highlight ? "rgba(255,255,255,0.7)" : "#6B7280" }}>{item.desc}</p>
               </div>
@@ -961,7 +1004,7 @@ export default function FranchiseLander() {
       {/* ── OWNERS STRIP ── */}
       <section className="py-16 overflow-hidden" style={{ background: LH_NAVY }}>
         <div className="max-w-6xl mx-auto px-4 mb-10 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE }}>Growing Network</p>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: LH_ORANGE_ON_DARK }}>Growing Network</p>
           <h2 className="text-3xl font-black uppercase text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>Smart Investors Already In. More Territories Closing.</h2>
           <p className="text-gray-300 mt-3 max-w-xl mx-auto">From Raleigh to Calgary, franchisees are building the Local Handyman brand in their communities.</p>
         </div>
@@ -985,6 +1028,7 @@ export default function FranchiseLander() {
               <source src="https://assets.cdn.filesafe.space/ZsBUSW0nlx5d5Mjpk3ph/media/677aeb68b0a11f29d6c5eb3d.mp4" type="video/mp4" />
             </video>
             <figcaption className="sr-only">Your Unfair Advantage: Colin Sprake, CEO and co-owner, on the Local Handyman system</figcaption>
+            <VideoTranscript name="Unfair Advantage" />
           </figure>
           {/* Body copy */}
           <div className="max-w-3xl mx-auto">
@@ -1014,7 +1058,7 @@ export default function FranchiseLander() {
       {/* ── FINAL CTA ── */}
       <section className="py-20" style={{ backgroundColor: LH_NAVY }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: LH_ORANGE }}>Limited Territories Available</p>
+          <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: LH_ORANGE_ON_DARK }}>Limited Territories Available</p>
           <h2 className="text-3xl md:text-5xl font-black uppercase text-white mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}><span className="sr-only">Territories Are Closing. Is Yours Still Available?</span><span aria-hidden="true">
             Territories Are Closing.<br />Is Yours Still Available?
           </span></h2>
@@ -1026,7 +1070,7 @@ export default function FranchiseLander() {
             style={{ backgroundColor: LH_ORANGE, fontFamily: "Montserrat, sans-serif" }}>
             See If My Territory Is Available <ArrowRight aria-hidden="true" className="w-5 h-5" />
           </a>
-          <p className="text-white/40 text-sm mt-4">No obligation. No broker fees. 100% confidential.</p>
+          <p className="text-white/80 text-sm mt-4">No obligation. No broker fees. 100% confidential.</p>
         </div>
       </section>
 
@@ -1120,13 +1164,13 @@ export default function FranchiseLander() {
             <a aria-label="Call our franchise team at 778-770-4494" href="tel:+17787704494" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Phone aria-hidden="true" className="w-3.5 h-3.5" />778-770-4494</a>
             <a aria-label="Email our franchise team at franchise@localhandyman.com" href="mailto:franchise@localhandyman.com" className="flex items-center gap-1.5 hover:text-orange-600 transition-colors"><Mail aria-hidden="true" className="w-3.5 h-3.5" />franchise@localhandyman.com</a>
           </div>
-          <p className="text-xs text-gray-400">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
+          <p className="text-xs text-gray-500">© 2026 Local Handyman · LOCALHANDYMAN.COM · SUCCESS PARTNER NETWORK</p>
         </div>
 
       {/* ── SOURCES / FOOTNOTES ── */}
       <section className="py-12 bg-gray-50 border-t border-gray-100">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Sources & Citations</h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-500">Sources & Citations</h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-3 text-xs text-gray-500 leading-relaxed">
             <div>
               <h3 className="font-semibold text-gray-600 mb-2">Market Size & Growth</h3><ul role="list">
