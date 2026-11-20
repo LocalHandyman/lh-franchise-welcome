@@ -27,6 +27,7 @@ h2 { font-size: clamp(36px, 4.4vw, 52px); }
 p { margin: 0; }
 a { color: var(--orange-dark); }
 a:hover { color: #9e2006; }
+button[data-call] { border: 0; font-family: inherit; cursor: pointer; }
 a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .narrow { max-width: 860px; }
@@ -228,7 +229,7 @@ section { padding: 80px 0; }
   .footer-row { flex-direction: column; }
   body { padding-bottom: 78px; }
   .mobile-bar { display: flex; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: #fff; border-top: 1px solid var(--border); padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 18px rgba(28, 26, 25, 0.1); }
-  .mobile-bar a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; }
+  .mobile-bar a, .mobile-bar button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; }
   .mb-call { flex: 7 1 0; background: var(--orange-btn); color: #fff; font-weight: 800; font-size: 17px; }
   .mb-call:hover { color: #fff; }
   .mb-alt { flex: 3 1 0; border: 2px solid var(--ink); color: var(--ink); }

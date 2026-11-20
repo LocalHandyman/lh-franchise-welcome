@@ -19,8 +19,12 @@ function photo(src, label, note, cls, eager = false) {
   return `<div class="${cls} ph"><span><strong>${esc(label)}</strong><br>${esc(note)}</span></div>`;
 }
 
+// The number is plain text, never a tel: link, so Andy's call tracking (DNI) can swap it.
+// Call buttons dial whatever number the page shows at click time (landing.js).
+const phoneText = (c) => `<span class="lp-phone">${esc(c.phone.display)}</span>`;
+
 function callButton(c, { big = false, loc }) {
-  return `<a class="btn-call${big ? " btn-call-big" : ""}" href="tel:${c.phone.e164}" data-loc="${loc}">${icon("phone", big ? 24 : 20)}<span class="btn-call-text"><span class="btn-call-num">Call ${c.phone.display}</span>${big ? `<span class="btn-call-sub">Free estimate · Talk to a local pro</span>` : ""}</span></a>`;
+  return `<button type="button" class="btn-call${big ? " btn-call-big" : ""}" data-call data-loc="${loc}">${icon("phone", big ? 24 : 20)}<span class="btn-call-text"><span class="btn-call-num">Call ${phoneText(c)}</span>${big ? `<span class="btn-call-sub">Free estimate · Talk to a local pro</span>` : ""}</span></button>`;
 }
 
 function reviewCard(r) {
@@ -67,8 +71,8 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
     </div>
     <div class="header-cta">
       <span class="header-kicker">Talk to a local pro<br><strong>Free estimate</strong></span>
-      <a class="btn-call header-call" href="tel:${c.phone.e164}" data-loc="header">${icon("phone", 20)}<span>${c.phone.display}</span></a>
-      <a class="header-icon-call" href="tel:${c.phone.e164}" data-loc="header-mobile" aria-label="Call ${c.phone.display}">${icon("phone", 22)}</a>
+      <button type="button" class="btn-call header-call" data-call data-loc="header">${icon("phone", 20)}${phoneText(c)}</button>
+      <button type="button" class="header-icon-call" data-call data-loc="header-mobile" aria-label="Call us">${icon("phone", 22)}</button>
     </div>
   </div>
 </header>
@@ -185,7 +189,7 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
   <div class="wrap final-inner">
     <h2>${esc(c.final.title)}</h2>
     <p>${esc(c.final.text)}</p>
-    <a class="btn-white" href="tel:${c.phone.e164}" data-loc="final">${icon("phone", 22)}<span>Call ${c.phone.display}</span></a>
+    <button type="button" class="btn-white" data-call data-loc="final">${icon("phone", 22)}<span>Call ${phoneText(c)}</span></button>
     <a class="final-link" href="#callback">Or request a call back</a>
     <span class="final-cities">${esc(cityList)} &amp; surrounding areas</span>
   </div>
@@ -200,7 +204,7 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
 </footer>
 
 <nav class="mobile-bar" aria-label="Contact">
-  <a class="mb-call" href="tel:${c.phone.e164}" data-loc="sticky">${icon("phone", 18)}Call now</a>
+  <button type="button" class="mb-call" data-call data-loc="sticky">${icon("phone", 18)}Call now</button>
   ${smsHref
     ? `<a class="mb-alt" href="${esc(smsHref)}" data-loc="sticky">${icon("message-square", 18)}Text us</a>`
     : `<a class="mb-alt" href="#callback">Call me back</a>`}

@@ -3,12 +3,18 @@ const LP = window.LP || {};
 const params = new URLSearchParams(location.search);
 const push = (event, extra = {}) => (window.dataLayer = window.dataLayer || []).push({ event, page_id: LP.pageId, ...extra });
 
+// Dial the number the page shows now, after any call-tracking swap.
+const shownNumber = () => "+1" + (document.querySelector(".lp-phone")?.textContent || "").replace(/\D/g, "").slice(-10);
+
 document.addEventListener("click", (e) => {
-  const a = e.target.closest("a[href]");
-  if (!a) return;
-  const href = a.getAttribute("href");
-  if (href.startsWith("tel:")) push("call_click", { click_location: a.dataset.loc });
-  else if (href.startsWith("sms:")) push("text_click", { click_location: a.dataset.loc });
+  const call = e.target.closest("[data-call]");
+  if (call) {
+    push("call_click", { click_location: call.dataset.loc });
+    location.href = "tel:" + shownNumber();
+    return;
+  }
+  const a = e.target.closest("a[href^='sms:']");
+  if (a) push("text_click", { click_location: a.dataset.loc });
 });
 
 const toggle = document.getElementById("toggle-reviews");
