@@ -45,6 +45,7 @@ export function renderPage(c) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
+<meta name="format-detection" content="telephone=no">
 <title>${esc(c.title)}</title>
 <meta name="description" content="${esc(c.description)}">
 <link rel="preload" href="/fonts/khand-700-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -56,7 +57,7 @@ ${c.clarityId ? `<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=
 <script>window.LP=${JSON.stringify(pageConfig)};</script>
 <script type="module" src="/landing/landing.js"></script>
 </head>
-<body class="${smsHref ? "has-sms" : ""}">
+<body>
 ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${esc(c.gtmId)}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>` : ""}
 
 <div class="utility">
