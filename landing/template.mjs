@@ -13,8 +13,9 @@ function hoursText({ days, open, close, tzLabel }) {
   return `${dayText}, ${hourLabel(open)}–${hourLabel(close)} ${tzLabel}`;
 }
 
-function photo(src, label, note, cls) {
-  if (src) return `<img class="${cls}" src="${esc(src)}" alt="${esc(note)}" loading="lazy" decoding="async">`;
+function photo(src, label, note, cls, eager = false) {
+  const load = eager ? `fetchpriority="high"` : `loading="lazy" decoding="async"`;
+  if (src) return `<img class="${cls}" src="${esc(src)}" alt="${esc(note)}" ${load}>`;
   return `<div class="${cls} ph"><span><strong>${esc(label)}</strong><br>${esc(note)}</span></div>`;
 }
 
@@ -42,9 +43,8 @@ export function renderPage(c) {
 <meta name="robots" content="noindex, nofollow">
 <title>${esc(c.title)}</title>
 <meta name="description" content="${esc(c.description)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/khand-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/landing/landing.css">
 ${c.gtmId ? `<script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({page_id:${JSON.stringify(c.pageId)}});
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${JSON.stringify(c.gtmId)});</script>` : ""}
@@ -93,7 +93,7 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
       </div>
     </div>
     <div class="hero-media">
-      ${photo(c.hero.photo, "Hero photo", c.hero.photoNote, "hero-photo")}
+      ${photo(c.hero.photo, "Hero photo", c.hero.photoNote, "hero-photo", true)}
       <div class="hero-review">
         ${stars()}
         <p>“${esc(c.hero.review.quote)}”</p>

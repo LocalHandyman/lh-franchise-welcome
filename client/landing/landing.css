@@ -1,4 +1,9 @@
 /* Service landing pages (landing/template.mjs). Orange is for call actions only. */
+/* Fonts are self-hosted (OFL, latin subset from Google Fonts) and preloaded; the fallbacks are width-matched so the swap doesn't shift the hero. */
+@font-face { font-family: Khand; src: url(/fonts/khand-700-latin.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: Inter; src: url(/fonts/inter-latin.woff2) format("woff2"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "Khand Fallback"; src: local("Arial Bold"), local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 77.3%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 106.9%; }
 :root {
   --orange: #e63410;
   --orange-btn: #d4300e; /* call buttons: white 13px text needs 4.5:1, #e63410 gives 4.3 */
@@ -11,12 +16,12 @@
   --border: #e9e4e0;
   --star: #f2a900;
   --green: #2f7d4f;
-  --display: Khand, Inter, system-ui, sans-serif;
+  --display: Khand, "Khand Fallback", sans-serif;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 96px; }
-body { margin: 0; font-family: Inter, system-ui, sans-serif; color: var(--ink); background: #fff; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { margin: 0; font-family: Inter, "Inter Fallback", sans-serif; color: var(--ink); background: #fff; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 h1, h2 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1; }
 h2 { font-size: clamp(36px, 4.4vw, 52px); }
 p { margin: 0; }
@@ -53,7 +58,7 @@ section { padding: 80px 0; }
 .btn-call-big { padding: 16px 28px; border-radius: 12px; box-shadow: 0 8px 18px rgba(230, 52, 16, 0.28); }
 .btn-call-big .btn-call-num { font-size: 26px; font-weight: 800; }
 .btn-call-sub { font-size: 14px; font-weight: 500; }
-.btn-outline { margin-top: 24px; background: #fff; border: 2px solid var(--ink); color: var(--ink); font: 700 16px Inter, sans-serif; padding: 12px 22px; border-radius: 10px; min-height: 48px; cursor: pointer; }
+.btn-outline { margin-top: 24px; background: #fff; border: 2px solid var(--ink); color: var(--ink); font: 700 16px Inter, "Inter Fallback", sans-serif; padding: 12px 22px; border-radius: 10px; min-height: 48px; cursor: pointer; }
 
 /* Hero */
 .hero { background: var(--stone); padding: 64px 0 72px; }
@@ -88,9 +93,9 @@ section { padding: 80px 0; }
 .callback-intro strong { font-family: var(--display); font-size: 28px; line-height: 1; }
 .callback-intro span { font-size: 15px; color: var(--body); }
 .callback-form label { flex: 1 1 180px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
-.callback-form input { height: 50px; border: 1.5px solid #c9c2bc; border-radius: 10px; padding: 0 14px; font: 400 17px Inter, sans-serif; color: var(--ink); }
+.callback-form input { height: 50px; border: 1.5px solid #c9c2bc; border-radius: 10px; padding: 0 14px; font: 400 17px Inter, "Inter Fallback", sans-serif; color: var(--ink); }
 .callback-form input[aria-invalid="true"] { border-color: var(--orange-dark); }
-.callback-form button { flex: 0 0 auto; height: 50px; padding: 0 24px; border: 2px solid var(--ink); background: var(--ink); color: #fff; font: 700 17px Inter, sans-serif; border-radius: 10px; cursor: pointer; }
+.callback-form button { flex: 0 0 auto; height: 50px; padding: 0 24px; border: 2px solid var(--ink); background: var(--ink); color: #fff; font: 700 17px Inter, "Inter Fallback", sans-serif; border-radius: 10px; cursor: pointer; }
 .callback-form button:disabled { opacity: 0.6; }
 .form-note { flex-basis: 100%; font-size: 13px; color: var(--muted); }
 .form-msg:empty { display: none; }
