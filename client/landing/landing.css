@@ -6,7 +6,6 @@
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 106.9%; }
 :root {
   --orange: #e63410;
-  --orange-btn: #d4300e; /* call buttons: white 13px text needs 4.5:1, #e63410 gives 4.3 */
   --orange-dark: #c42a0a;
   --ink: #1a1817;
   --body: #3f3a37;
@@ -53,7 +52,7 @@ section { padding: 80px 0; }
 .header-icon-call { display: none; }
 
 /* Buttons */
-.btn-call { display: inline-flex; align-items: center; gap: 10px; background: var(--orange-btn); color: #fff; text-decoration: none; font-weight: 700; font-size: 20px; padding: 14px 22px; border-radius: 10px; min-height: 48px; }
+.btn-call { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; text-decoration: none; font-weight: 700; font-size: 20px; padding: 14px 22px; border-radius: 10px; min-height: 48px; }
 .btn-call:hover { background: var(--orange-dark); color: #fff; }
 .btn-call-text { display: flex; flex-direction: column; line-height: 1.15; }
 .btn-call-big { padding: 16px 28px; border-radius: 12px; box-shadow: 0 8px 18px rgba(230, 52, 16, 0.28); }
@@ -168,7 +167,7 @@ section { padding: 80px 0; }
 .faq details p { padding: 0 22px 22px; color: var(--body); font-size: 16px; }
 
 /* Final CTA */
-.final { background: var(--orange-btn); color: #fff; text-align: center; }
+.final { background: var(--orange); color: #fff; text-align: center; }
 .final-inner { display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .final h2 { font-size: clamp(40px, 5vw, 60px); }
 .final p { font-size: 19px; }
@@ -203,7 +202,7 @@ section { padding: 80px 0; }
   .logo { width: 70px; height: 42px; }
   .brand-name { font-size: 12px; }
   .header-kicker, .header-call { display: none; }
-  .header-icon-call { display: flex; width: 48px; height: 48px; border-radius: 12px; background: var(--orange-btn); color: #fff; align-items: center; justify-content: center; }
+  .header-icon-call { display: flex; width: 48px; height: 48px; border-radius: 12px; background: var(--orange); color: #fff; align-items: center; justify-content: center; }
   .hero { padding: 22px 0 40px; }
   .hero-copy { gap: 14px; }
   .hero h1 { font-size: 44px; }
@@ -230,7 +229,7 @@ section { padding: 80px 0; }
   body { padding-bottom: 78px; }
   .mobile-bar { display: flex; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: #fff; border-top: 1px solid var(--border); padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 18px rgba(28, 26, 25, 0.1); }
   .mobile-bar a, .mobile-bar button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; }
-  .mb-call { flex: 7 1 0; background: var(--orange-btn); color: #fff; font-weight: 800; font-size: 17px; }
+  .mb-call { flex: 7 1 0; background: var(--orange); color: #fff; font-weight: 800; font-size: 17px; }
   .mb-call:hover { color: #fff; }
   .mb-alt { flex: 3 1 0; border: 2px solid var(--ink); color: var(--ink); }
   body.has-sms .mb-call { flex: 6 1 0; }
