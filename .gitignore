@@ -111,3 +111,6 @@ temp/
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
+
+# Service landing pages, generated from landing/pages/ by landing/build.mjs
+client/*/*/index.html

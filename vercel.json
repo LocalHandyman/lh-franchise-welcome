@@ -4,6 +4,7 @@
   "framework": "vite",
   "routes": [
     { "src": "/ignite/?", "dest": "/ignite/index.html", "headers": { "X-Robots-Tag": "noindex, follow" } },
+    { "src": "/fraser-valley/(drywall-repair|painting)/?", "dest": "/fraser-valley/$1/index.html", "headers": { "X-Robots-Tag": "noindex, nofollow" } },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
