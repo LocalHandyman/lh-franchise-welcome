@@ -7,7 +7,7 @@ export default {
   // Mobile "Text us" shows only when this is set: it must be an SMS-capable number whose texts land in a watched inbox.
   smsNumber: "",
   gtmId: "GTM-T9WX9TV3", // franchisees.gtm_container_id for Fraser Valley; Andy confirms
-  clarityId: "y2jhmwlgab", // the Welcome site's Clarity project (tech@ is a team member); filter by URL for these pages
+  clarityId: "y41qbs8jo4", // localhandyman.com's Clarity project, as on the other apps (8globdLu); filter by URL for these pages
   // Callback form target (Revenue Center + Housecall Pro). Production builds refuse to run while this is empty.
   formEndpoint: "",
   cities: ["Langley", "Abbotsford", "Chilliwack", "Mission"],
