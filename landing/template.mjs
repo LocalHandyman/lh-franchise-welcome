@@ -67,7 +67,7 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
 <header class="site-header">
   <div class="wrap header-row">
     <div class="brand">
-      <img class="logo" src="${esc(c.logo)}" alt="Local Handyman" width="84" height="50">
+      <img class="logo" src="${esc(c.logo)}" alt="Local Handyman" width="96" height="54">
       <span class="brand-name">Local Handyman<br><strong>${esc(c.territory)}</strong></span>
     </div>
     <div class="header-cta">
@@ -148,7 +148,7 @@ ${c.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=
 
 <section class="before-after">
   <div class="wrap">
-    <div class="section-head"><span class="eyebrow">Recent ${esc(c.territory)} job</span><h2>${esc(c.beforeAfter.title)}</h2></div>
+    <div class="section-head"><span class="eyebrow">A recent Local Handyman job</span><h2>${esc(c.beforeAfter.title)}</h2></div>
     <div class="ba-grid">
       <figure>${photo(c.beforeAfter.before.photo, "Before", c.beforeAfter.before.note, "ba-photo")}<figcaption>Before</figcaption></figure>
       <figure>${photo(c.beforeAfter.after.photo, "After", c.beforeAfter.after.note, "ba-photo")}<figcaption>After</figcaption></figure>

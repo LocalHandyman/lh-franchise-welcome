@@ -12,8 +12,8 @@ export default {
   mobileSubhead: "Walls, trim, doors or ceilings. We prep properly, protect your floors and leave the room clean.",
   smsBody: "Hi! I'd like a free quote for interior painting. I can send photos if that helps.",
   hero: {
-    photo: "",
-    photoNote: "A Fraser Valley tech cutting in a freshly painted wall, face visible, drop cloths down, bright natural light",
+    photo: "/images/fraser-valley/jason.webp",
+    photoNote: "Jason, General Manager, Local Handyman Fraser Valley",
     review: { quote: "The work area was kept clean, and everything was completed as described in the quote.", name: "Aaron L.", detail: "Fraser Valley · Google review" },
   },
   reviewIds: ["glen", "brenda", "aaron", "sharonGloriaQuote", "rosemary", "tei"],
@@ -32,9 +32,9 @@ export default {
   },
   beforeAfter: {
     title: "Fresh walls. Clean lines. No mess left behind.",
-    before: { photo: "", note: "Fraser Valley job photo from Jason" },
-    after: { photo: "", note: "Same room, same angle, freshly painted" },
-    caption: "[City] · [Job type, e.g. living room walls and trim] · Completed [Month 2026]",
+    before: { photo: "/images/fraser-valley/painting-before.jpg", note: "Bedroom before painting, with white walls and decorating equipment" },
+    after: { photo: "/images/fraser-valley/painting-after.jpg", note: "The same bedroom after painting, with pale pink walls" },
+    caption: "A Local Handyman job · Bedroom walls repainted",
   },
   why: {
     title: "One call. One team. A room you’ll love.",

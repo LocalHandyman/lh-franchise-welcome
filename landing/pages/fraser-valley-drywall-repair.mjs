@@ -12,8 +12,8 @@ export default {
   mobileSubhead: "One local team patches it, matches the texture and paints it to blend. No juggling two trades.",
   smsBody: "Hi! I'd like a free quote for drywall repair. I can send photos if that helps.",
   hero: {
-    photo: "",
-    photoNote: "Mark or a Fraser Valley tech mid-repair on a wall, face visible, bright natural light",
+    photo: "/images/fraser-valley/mark.webp",
+    photoNote: "Mark, Lead Technician, Local Handyman Fraser Valley",
     review: { quote: "…made it so you would never know it had been repaired!", name: "Sharon & Gloria", detail: "Abbotsford · Ceiling drywall repair" },
   },
   reviewIds: ["sharonGloriaDrywall", "brenda", "aaron", "glen", "rosemary", "tei"],
@@ -32,9 +32,9 @@ export default {
   },
   beforeAfter: {
     title: "Patched so well you won’t find it.",
-    before: { photo: "", note: "Fraser Valley job photo from Jason" },
-    after: { photo: "", note: "Same wall, same angle, finished and painted" },
-    caption: "[City] · [Job type, e.g. ceiling patch after plumbing repair] · Completed [Month 2026]",
+    before: { photo: "/images/fraser-valley/drywall-before.jpg", note: "Open section of ceiling with exposed framing and pipes before drywall repair" },
+    after: { photo: "/images/fraser-valley/drywall-after.jpg", note: "The same ceiling opening closed and finished after drywall repair" },
+    caption: "A Local Handyman job · Ceiling opening after plumbing work, closed and finished",
   },
   why: {
     title: "One call. One team. A finished wall.",

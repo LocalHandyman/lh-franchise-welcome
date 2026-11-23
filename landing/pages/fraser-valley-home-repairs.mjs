@@ -13,8 +13,8 @@ export default {
   mobileSubhead: "The sticking door, the damaged drywall, the jobs you keep walking past. One team, one visit.",
   smsBody: "Hi! I'd like a free quote for a few jobs around the house. I can send photos if that helps.",
   hero: {
-    photo: "",
-    photoNote: "Jason or Mark at a customer's door with a tool bag, face visible, bright natural light",
+    photo: "/images/fraser-valley/jason.webp",
+    photoNote: "Jason, General Manager, Local Handyman Fraser Valley",
     review: { quote: "We had a job that needed to be done quickly. Mark made it happen.", name: "Evonne P.", detail: "Fraser Valley · Google review" },
   },
   reviewIds: ["glen", "rosemary", "aaron", "brenda", "sharonGloriaQuote", "tei"],
@@ -33,9 +33,9 @@ export default {
   },
   beforeAfter: {
     title: "A little work. A big difference.",
-    before: { photo: "", note: "Fraser Valley job photo from Jason" },
-    after: { photo: "", note: "Same spot, same angle, finished" },
-    caption: "[City] · [Job type] · Completed [Month 2026]",
+    before: { photo: "/images/fraser-valley/home-repairs-before.webp", note: "Hole in a wall above the baseboard, with the stud showing" },
+    after: { photo: "/images/fraser-valley/home-repairs-after.webp", note: "The same wall patched and painted, no sign of the hole" },
+    caption: "A Local Handyman job · Wall hole patched and painted",
   },
   why: {
     title: "One call. One team. The whole list.",

@@ -18,10 +18,10 @@ export default {
   rating: { score: "4.7", count: 109 },
   utilityLine: "Same-day response · Free on-site estimates",
   trust: ["BBB Accredited", "Insured team", "Booked within 1–3 days"],
-  logo: "/images/handymanlogo_d9f89eaa.png",
+  logo: "/images/fraser-valley/lh-logo.webp",
   team: [
-    { name: "Jason", role: "General Manager", photo: "" },
-    { name: "Mark", role: "Lead Technician", photo: "" },
+    { name: "Jason", role: "General Manager", photo: "/images/fraser-valley/jason.webp" },
+    { name: "Mark", role: "Lead Technician", photo: "/images/fraser-valley/mark.webp" },
   ],
   teamQuote: { text: "We had a job that needed to be done quickly. Mark made it happen.", name: "Evonne P." },
   reviews: {
