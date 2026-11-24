@@ -5,9 +5,9 @@
 @font-face { font-family: "Khand Fallback"; src: local("Arial Bold"), local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 77.3%; }
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 106.9%; }
 :root {
-  --orange: #f04e23;
+  --orange: #c2410c;
   --orange-dark: #c42a0a;
-  --orange-hover: #d63f17;
+  --orange-hover: #9a3412;
   --ink: #1a1817;
   --body: #3f3a37;
   --muted: #5e5855;
@@ -59,7 +59,7 @@ section { padding: 80px 0; }
 .btn-call { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; text-decoration: none; font-weight: 700; font-size: 20px; padding: 14px 22px; border-radius: 10px; min-height: 48px; }
 @media (hover: hover) { .btn-call:hover { background: var(--orange-hover); color: #fff; } }
 .btn-call-text { display: flex; flex-direction: column; line-height: 1.15; }
-.btn-call-big { padding: 16px 28px; border-radius: 12px; box-shadow: 0 8px 18px rgba(240, 78, 35, 0.28); }
+.btn-call-big { padding: 16px 28px; border-radius: 12px; box-shadow: 0 8px 18px rgba(194, 65, 12, 0.28); }
 .btn-call-big .btn-call-num { font-size: 26px; font-weight: 800; }
 .btn-call-sub { font-size: 14px; font-weight: 500; }
 .btn-outline { margin-top: 24px; background: #fff; border: 2px solid var(--ink); color: var(--ink); font: 700 16px Inter, "Inter Fallback", sans-serif; padding: 12px 22px; border-radius: 10px; min-height: 48px; cursor: pointer; }
