@@ -9,7 +9,7 @@ export default {
   gtmId: "GTM-T9WX9TV3", // franchisees.gtm_container_id for Fraser Valley; Andy confirms
   clarityId: "y41qbs8jo4", // localhandyman.com's Clarity project, as on the other apps (8globdLu); filter by URL for these pages
   // Callback form target (Revenue Center + Housecall Pro). Production builds refuse to run while this is empty.
-  formEndpoint: "",
+  formEndpoint: "https://hub.localhandyman.com/api/intake/web-form?location=49",
   cities: ["Langley", "Abbotsford", "Chilliwack", "Mission"],
   defaultCity: "the Fraser Valley",
   // Revenue Center coverage: 8 AM PT to 6 PM ET (3 PM PT), Mon-Fri. Confirm before launch.
